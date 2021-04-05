@@ -38,6 +38,9 @@ function setup_renderer() {
     renderer.gammaFactor = 2.2;
     renderer.outputEncoding = THREE.sRGBEncoding;
 
+    renderer.shadowMap.enabled = true;
+    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
     document.body.appendChild(renderer.domElement);
 }
 
@@ -59,9 +62,27 @@ function setup_hdr_background() {
 }
 
 function setup_light() {
-    var hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444, 23 );
+    var hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444, 3 );
     hemiLight.position.set( 0, 300, 0 );
     scene.add( hemiLight );    
+
+    const light = new THREE.SpotLight( 0xffffff, 75, 2, 135);
+    light.position.set( 1, 1, 1 ); //default; light shining from top
+    light.castShadow = true; // default false
+
+    light.shadow.bias = -0.0001;
+
+    //Set up shadow properties for the light
+    light.shadow.mapSize.width = 1024; // default
+    light.shadow.mapSize.height = 1024; // default
+    light.shadow.camera.near = 0.5; // default
+    light.shadow.camera.far = 3; // default
+    light.shadow.camera.fov = 35; // default
+    
+    scene.add( light );
+
+    const helper = new THREE.CameraHelper( light.shadow.camera );
+    scene.add( helper );
 }
 
 function load_environment() {
@@ -70,7 +91,17 @@ function load_environment() {
     loader.load(
         file_path,
         function (gltf) {
-            scene.add(gltf.scene);
+            const gltfScene = gltf.scene;
+
+            gltfScene.traverse( function( child ) { 
+                if ( child.isMesh ) {
+                    console.info("Enable shadow cast/receive");
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            } );
+
+            scene.add(gltfScene);
         },
         function (xhr) {
             console.log(file_path + ': ' + (xhr.loaded / xhr.total) * 100 + '% loaded');
@@ -78,6 +109,13 @@ function load_environment() {
         function (error) {
             console.error(error);
         });
+
+        const geometry = new THREE.SphereGeometry( 0.01, 32, 32 );
+        const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+        const sphere = new THREE.Mesh( geometry, material );
+        sphere.position.set(0, 0.02, 0);
+        sphere.castShadow = true;
+        scene.add( sphere );
 }
 
 function init() {
