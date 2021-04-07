@@ -18,32 +18,11 @@
                 1,
                 2,
                 3,
-                4,
-                5,
-                6
+                4
             ]
         }
     ],
     "nodes" : [
-        {
-            "name" : "Camera",
-            "rotation" : [
-                0.5037181973457336,
-                -0.19261668622493744,
-                0.11632991582155228,
-                0.8340468406677246
-            ],
-            "scale" : [
-                6.769072532653809,
-                6.769073009490967,
-                6.769072532653809
-            ],
-            "translation" : [
-                -0.24895399808883667,
-                0.2553413212299347,
-                0.4709285795688629
-            ]
-        },
         {
             "mesh" : 0,
             "name" : "table"
@@ -51,21 +30,6 @@
         {
             "mesh" : 1,
             "name" : "measurement pad"
-        },
-        {
-            "mesh" : 2,
-            "name" : "cap bottom",
-            "rotation" : [
-                0,
-                0,
-                1,
-                7.549790126404332e-08
-            ],
-            "translation" : [
-                -0.03886990249156952,
-                0.02433512546122074,
-                0.0702461525797844
-            ]
         },
         {
             "name" : "Spotlight",
@@ -78,7 +42,7 @@
             "translation" : [
                 -0.4300000071525574,
                 0.8499999642372131,
-                -0.22999997437000275
+                -0.20999997854232788
             ]
         },
         {
@@ -115,7 +79,8 @@
             "doubleSided" : true,
             "name" : "woodtable",
             "normalTexture" : {
-                "index" : 0
+                "index" : 0,
+                "scale" : 0.30000007152557373
             },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
@@ -123,45 +88,34 @@
                 },
                 "metallicRoughnessTexture" : {
                     "index" : 2
-                }
+                },
+                "roughnessFactor" : 1.5999999046325684
             }
         },
         {
             "doubleSided" : true,
             "name" : "grid pad",
+            "normalTexture" : {
+                "extensions" : {
+                    "KHR_texture_transform" : {
+                        "offset" : [
+                            0,
+                            -4
+                        ],
+                        "scale" : [
+                            5,
+                            5
+                        ]
+                    }
+                },
+                "index" : 3
+            },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
-                    "index" : 3
-                },
-                "metallicRoughnessTexture" : {
-                    "extensions" : {
-                        "KHR_texture_transform" : {
-                            "offset" : [
-                                0,
-                                -2
-                            ],
-                            "scale" : [
-                                3,
-                                3
-                            ]
-                        }
-                    },
                     "index" : 4
-                }
-            }
-        },
-        {
-            "doubleSided" : true,
-            "name" : "metal",
-            "pbrMetallicRoughness" : {
-                "baseColorFactor" : [
-                    0.2529434263706207,
-                    0.2529434263706207,
-                    0.2529434263706207,
-                    1
-                ],
-                "metallicFactor" : 0.5,
-                "roughnessFactor" : 0.4909090995788574
+                },
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.7272727489471436
             }
         }
     ],
@@ -195,21 +149,6 @@
                     "material" : 1
                 }
             ]
-        },
-        {
-            "name" : "ID3",
-            "primitives" : [
-                {
-                    "attributes" : {
-                        "POSITION" : 9,
-                        "NORMAL" : 10,
-                        "TANGENT" : 11,
-                        "TEXCOORD_0" : 12
-                    },
-                    "indices" : 13,
-                    "material" : 2
-                }
-            ]
         }
     ],
     "textures" : [
@@ -237,28 +176,28 @@
     "images" : [
         {
             "mimeType" : "image/jpeg",
-            "name" : "Wood051_8K_Normal",
-            "uri" : "Wood051_8K_Normal.jpg"
+            "name" : "Wood051_2K_Normal",
+            "uri" : "Wood051_2K_Normal.jpg"
         },
         {
             "mimeType" : "image/jpeg",
-            "name" : "Wood051_8K_Color",
-            "uri" : "Wood051_8K_Color.jpg"
+            "name" : "Wood051_2K_Color",
+            "uri" : "Wood051_2K_Color.jpg"
         },
         {
             "mimeType" : "image/png",
-            "name" : "Wood051_4K_Roughness",
-            "uri" : "Wood051_4K_Roughness.png"
+            "name" : "metalness-Wood051_2K_Roughness",
+            "uri" : "metalness-Wood051_2K_Roughness.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "pad-normalmap",
+            "uri" : "pad-normalmap.png"
         },
         {
             "mimeType" : "image/png",
             "name" : "grid-pad V01",
             "uri" : "grid-pad%20V01.png"
-        },
-        {
-            "mimeType" : "image/png",
-            "name" : "noise",
-            "uri" : "noise.png"
         }
     ],
     "accessors" : [
@@ -335,46 +274,6 @@
             "componentType" : 5126,
             "count" : 24,
             "type" : "VEC2"
-        },
-        {
-            "bufferView" : 9,
-            "componentType" : 5126,
-            "count" : 26520,
-            "max" : [
-                0.07100000232458115,
-                0.013000000268220901,
-                0.03800000250339508
-            ],
-            "min" : [
-                -0.05400000140070915,
-                -0.004414999857544899,
-                -0.03500000014901161
-            ],
-            "type" : "VEC3"
-        },
-        {
-            "bufferView" : 10,
-            "componentType" : 5126,
-            "count" : 26520,
-            "type" : "VEC3"
-        },
-        {
-            "bufferView" : 11,
-            "componentType" : 5126,
-            "count" : 26520,
-            "type" : "VEC4"
-        },
-        {
-            "bufferView" : 12,
-            "componentType" : 5126,
-            "count" : 26520,
-            "type" : "VEC2"
-        },
-        {
-            "bufferView" : 13,
-            "componentType" : 5123,
-            "count" : 71700,
-            "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
@@ -422,31 +321,6 @@
             "buffer" : 0,
             "byteLength" : 192,
             "byteOffset" : 2184
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 318240,
-            "byteOffset" : 2376
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 318240,
-            "byteOffset" : 320616
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 424320,
-            "byteOffset" : 638856
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 212160,
-            "byteOffset" : 1063176
-        },
-        {
-            "buffer" : 0,
-            "byteLength" : 143400,
-            "byteOffset" : 1275336
         }
     ],
     "samplers" : [
@@ -457,7 +331,7 @@
     ],
     "buffers" : [
         {
-            "byteLength" : 1418736,
+            "byteLength" : 2376,
             "uri" : "environment V01.bin"
         }
     ]
