@@ -69,6 +69,8 @@ function setup_light() {
     const light1 = new THREE.SpotLight( 0xffffff, 5, 2, THREE.MathUtils.degToRad(13), 0.3);
     light1.position.set( 0.4, 0.4, 0.7 ); 
     light1.castShadow = true;
+	scene.add( light1.target );
+	light1.target.position.set(0.1, 0, -0.1);
 
     light1.shadow.bias = -0.001;
 
@@ -89,6 +91,8 @@ function setup_light() {
 	const light2 = new THREE.SpotLight( 0xffffff, 10, 2, THREE.MathUtils.degToRad(15) , 0.3);
     light2.position.set( -0.4, 0.85, -0.2 ); 
     light2.castShadow = true;
+	scene.add( light2.target );
+	light2.target.position.set(0.1, 0, -0.1);
 
     light2.shadow.bias = -0.001;
 
@@ -109,6 +113,8 @@ function setup_light() {
 	const light3 = new THREE.SpotLight( 0xffffff, 5, 3, THREE.MathUtils.degToRad(5) , 0.5);
     light3.position.set( 0.8, 0.4, -2 ); 
     light3.castShadow = true;
+	scene.add( light3.target );
+	light3.target.position.set(0.1, 0, -0.1);
 
     light3.shadow.bias = -0.001;
 
