@@ -183,11 +183,16 @@ function load_object(model) {
                     child.receiveShadow = true;
                     if(child.material.map) child.material.map.anisotropy = 16; 
 
-                    // child.material.encoding = THREE.sRGBEncoding;
+                    //get object bounding box and move object
+					child.geometry.computeBoundingBox();
+					var width = child.geometry.boundingBox.max.x;
+					var height = child.geometry.boundingBox.max.y;
+					var length = child.geometry.boundingBox.max.z;
+					child.position.set(width, height, -length);
                 }
             } );
 
-			gltfScene.position.set(0, 0, 0);
+			//gltfScene.position.set(0, 0, 0);
             scene.add(gltfScene);
         },
         function (xhr) {
