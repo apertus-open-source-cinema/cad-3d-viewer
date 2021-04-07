@@ -25,11 +25,21 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "table"
+            "name" : "table",
+            "translation" : [
+                0.13299351930618286,
+                -0.011745794676244259,
+                -0.09567772597074509
+            ]
         },
         {
             "mesh" : 1,
-            "name" : "measurement pad"
+            "name" : "measurement pad",
+            "translation" : [
+                0.11479999870061874,
+                -0.011732546612620354,
+                -0.11479999870061874
+            ]
         },
         {
             "name" : "Spotlight",

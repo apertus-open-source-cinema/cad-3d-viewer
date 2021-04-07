@@ -163,6 +163,35 @@ function load_environment() {
         scene.add( sphere );
 }
 
+function load_object(model) {
+    let file_path = 'data/models/' + model;
+
+    loader.load(
+        file_path,
+        function (gltf) {
+            const gltfScene = gltf.scene;
+
+            gltfScene.traverse( function( child ) { 
+                if ( child.isMesh ) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                    if(child.material.map) child.material.map.anisotropy = 16; 
+
+                    // child.material.encoding = THREE.sRGBEncoding;
+                }
+            } );
+
+			gltfScene.position.set(0, 0, 0);
+            scene.add(gltfScene);
+        },
+        function (xhr) {
+            console.log(file_path + ': ' + (xhr.loaded / xhr.total) * 100 + '% loaded');
+        },
+        function (error) {
+            console.error(error);
+        });
+}
+
 function init() {
     setup_general();
     setup_renderer();
@@ -171,6 +200,7 @@ function init() {
     setup_light();
 
     load_environment();
+	load_object("cap-bottom-v5.gltf")
 
     render();
 }
