@@ -183,11 +183,16 @@ function load_object(model) {
                     child.receiveShadow = true;
                     if(child.material.map) child.material.map.anisotropy = 16; 
 
-                    //get object bounding box and move object
-					child.geometry.computeBoundingBox();
-					var width = child.geometry.boundingBox.max.x;
+                    // var helper = new THREE.BoxHelper(child);
+                    // helper.geometry.computeBoundingBox();
+                    // scene.add(helper);
+                    // console.log(helper.geometry.boundingBox);
+                    
+                    console.log(child);
+                    child.geometry.computeBoundingBox();
+					var width = Math.abs(child.geometry.boundingBox.min.x);
 					var height = child.geometry.boundingBox.max.y;
-					var length = child.geometry.boundingBox.max.z;
+					var length = Math.abs(child.geometry.boundingBox.min.z);
 					child.position.set(width, height, -length);
                 }
             } );
