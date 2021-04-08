@@ -161,12 +161,12 @@ function load_environment() {
             console.error(error);
         });
 
-        const geometry = new THREE.SphereGeometry( 0.01, 32, 32 );
-        const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-        const sphere = new THREE.Mesh( geometry, material );
-        sphere.position.set(0, 0.02, 0);
-        sphere.castShadow = true;
-        scene.add( sphere );
+        // const geometry = new THREE.SphereGeometry( 0.01, 32, 32 );
+        // const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+        // const sphere = new THREE.Mesh( geometry, material );
+        // sphere.position.set(0, 0.02, 0);
+        // sphere.castShadow = true;
+        // scene.add( sphere );
 }
 
 function load_object(model) {
@@ -177,27 +177,29 @@ function load_object(model) {
         function (gltf) {
             const gltfScene = gltf.scene;
 
+            var boundingBox = new THREE.Box3().setFromObject(gltfScene);
+            //console.log(boundingBox)
+			var width = Math.abs(boundingBox.min.x);
+			var height = Math.abs(boundingBox.min.y);
+			var length = Math.abs(boundingBox.max.z);
+			gltfScene.position.set(width, height, -length);
+
+            // var helper = new THREE.BoxHelper(gltfScene);
+            // helper.geometry.computeBoundingBox();
+            // scene.add(helper);           
+
             gltfScene.traverse( function( child ) { 
+                console.log("Child:" + child);
+
                 if ( child.isMesh ) {
                     child.castShadow = true;
                     child.receiveShadow = true;
-                    if(child.material.map) child.material.map.anisotropy = 16; 
-
-                    // var helper = new THREE.BoxHelper(child);
-                    // helper.geometry.computeBoundingBox();
-                    // scene.add(helper);
-                    // console.log(helper.geometry.boundingBox);
-                    
-                    console.log(child);
-                    child.geometry.computeBoundingBox();
-					var width = Math.abs(child.geometry.boundingBox.min.x);
-					var height = child.geometry.boundingBox.max.y;
-					var length = Math.abs(child.geometry.boundingBox.min.z);
-					child.position.set(width, height, -length);
+                    if(child.material.map) {
+                        child.material.map.anisotropy = 16; 
+                    }
                 }
             } );
 
-			//gltfScene.position.set(0, 0, 0);
             scene.add(gltfScene);
         },
         function (xhr) {
