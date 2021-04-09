@@ -40,8 +40,8 @@ function flip_model() {
     }
     
     anime.timeline({
-        easing: 'easeInOutExpo',
-        duration: 1000,
+        easing: 'linear',
+        duration: 200,
         update: camera.updateProjectionMatrix(),
         begin: function(anim) {flipButton.disabled = true},
         complete: function(anim) {flipButton.disabled = false},
