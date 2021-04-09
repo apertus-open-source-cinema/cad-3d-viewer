@@ -3,12 +3,6 @@
         "generator" : "Khronos glTF Blender I/O v1.6.8",
         "version" : "2.0"
     },
-    "extensionsUsed" : [
-        "KHR_texture_transform"
-    ],
-    "extensionsRequired" : [
-        "KHR_texture_transform"
-    ],
     "scene" : 0,
     "scenes" : [
         {
@@ -28,7 +22,7 @@
             "name" : "table",
             "translation" : [
                 0.13299351930618286,
-                -0.011745794676244259,
+                -0.011149999685585499,
                 -0.09567772597074509
             ]
         },
@@ -37,7 +31,7 @@
             "name" : "measurement pad",
             "translation" : [
                 0.11479999870061874,
-                -0.011732546612620354,
+                -0.011260000057518482,
                 -0.11479999870061874
             ]
         },
@@ -106,19 +100,8 @@
             "doubleSided" : true,
             "name" : "grid pad",
             "normalTexture" : {
-                "extensions" : {
-                    "KHR_texture_transform" : {
-                        "offset" : [
-                            0,
-                            -4
-                        ],
-                        "scale" : [
-                            5,
-                            5
-                        ]
-                    }
-                },
-                "index" : 3
+                "index" : 3,
+                "texCoord" : 1
             },
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
@@ -153,7 +136,8 @@
                         "POSITION" : 5,
                         "NORMAL" : 6,
                         "TANGENT" : 7,
-                        "TEXCOORD_0" : 8
+                        "TEXCOORD_0" : 8,
+                        "TEXCOORD_1" : 9
                     },
                     "indices" : 4,
                     "material" : 1
@@ -284,6 +268,12 @@
             "componentType" : 5126,
             "count" : 24,
             "type" : "VEC2"
+        },
+        {
+            "bufferView" : 9,
+            "componentType" : 5126,
+            "count" : 24,
+            "type" : "VEC2"
         }
     ],
     "bufferViews" : [
@@ -331,6 +321,11 @@
             "buffer" : 0,
             "byteLength" : 192,
             "byteOffset" : 2184
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 192,
+            "byteOffset" : 2376
         }
     ],
     "samplers" : [
@@ -341,7 +336,7 @@
     ],
     "buffers" : [
         {
-            "byteLength" : 2376,
+            "byteLength" : 2568,
             "uri" : "environment V01.bin"
         }
     ]
