@@ -5,29 +5,60 @@ import { OrbitControls } from './three.js/controls/OrbitControls.js';
 import { GLTFLoader } from './three.js/loaders/GLTFLoader.js';
 import { RGBELoader } from './three.js/loaders/RGBELoader.js';
 
+import anime from './anime.es.js';
+
 var camera = null;
 var controls = null;
 var renderer = null;
 var scene = null;
 
-var container = container;
+var container = null;
+
+var currentModel = null;
+
+var timeline = null
 
 const loader = new GLTFLoader();
+
+document.getElementById('flip').addEventListener('click', flip_model);
+
+function flip_model() {
+    var boundingBox = new THREE.Box3().setFromObject(currentModel);
+    var rotation = currentModel.rotation.x
+    var rotationAngle = 0;
+    var heightOffset = -boundingBox.min.y;
+    
+    if(rotation == 0)
+    {
+        rotationAngle = THREE.Math.degToRad(180);
+        heightOffset = boundingBox.max.y;
+    }
+    
+    anime.timeline({
+        easing: 'easeInOutExpo',
+        duration: 1000,
+        update: camera.updateProjectionMatrix(),
+      }).add({targets: currentModel.position, y: boundingBox.max.y * 2})
+        .add({targets: currentModel.rotation, x: rotationAngle})
+        .add({targets: currentModel.position, y: heightOffset});
+}
 
 function setup_general() {
     container = document.getElementById('render_canvas');
 
     camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.01, 1000);
-    camera.position.set(0, 0.3, 0.5);
+    camera.position.set(-0.3, 0.3, 0.5);
+    camera.lookAt(0.5, 0.3, 0.5)
     camera.setFocalLength(85);
-
-    controls = new OrbitControls(camera, container);
     
+    controls = new OrbitControls(camera, document.querySelector('#app'));
+    controls.target.set(0.0, 0.05, 0.0);
+
     scene = new THREE.Scene();
 }
 
 function setup_renderer() {
-    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer = new THREE.WebGLRenderer({antialias: true, canvas: container});
     renderer.setSize(container.clientWidth, container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setClearColor( 0x111522 );
@@ -41,7 +72,7 @@ function setup_renderer() {
     renderer.shadowMap.enabled = true;
 	renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    document.body.appendChild(renderer.domElement);
+    // document.body.appendChild(renderer.domElement);
 }
 
 function setup_hdr_background() {
@@ -134,7 +165,7 @@ function setup_light() {
 }
 
 function load_environment() {
-    let file_path = 'data/models/environment/environment V01.gltf';
+    let file_path = 'data/models/environment/environment_V01.gltf';
 
     loader.load(
         file_path,
@@ -161,12 +192,12 @@ function load_environment() {
             console.error(error);
         });
 
-        const geometry = new THREE.SphereGeometry( 0.01, 32, 32 );
-        const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-        const sphere = new THREE.Mesh( geometry, material );
-        sphere.position.set(0, 0.02, 0);
-        sphere.castShadow = true;
-        scene.add( sphere );
+        // const geometry = new THREE.SphereGeometry( 0.01, 32, 32 );
+        // const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+        // const sphere = new THREE.Mesh( geometry, material );
+        // sphere.position.set(0, 0.02, 0);
+        // sphere.castShadow = true;
+        // scene.add( sphere );
 }
 
 function load_object(model) {
@@ -176,28 +207,31 @@ function load_object(model) {
         file_path,
         function (gltf) {
             const gltfScene = gltf.scene;
+            currentModel = gltfScene;
+
+            var boundingBox = new THREE.Box3().setFromObject(gltfScene);
+            //console.log(boundingBox)
+			var width = Math.abs(boundingBox.min.x);
+			var height = Math.abs(boundingBox.min.y);
+			var length = Math.abs(boundingBox.max.z);
+			gltfScene.position.set(width, height, -length);
+
+            // var helper = new THREE.BoxHelper(gltfScene);
+            // helper.geometry.computeBoundingBox();
+            // scene.add(helper);           
 
             gltfScene.traverse( function( child ) { 
+                console.log("Child:" + child);
+
                 if ( child.isMesh ) {
                     child.castShadow = true;
                     child.receiveShadow = true;
-                    if(child.material.map) child.material.map.anisotropy = 16; 
-
-                    // var helper = new THREE.BoxHelper(child);
-                    // helper.geometry.computeBoundingBox();
-                    // scene.add(helper);
-                    // console.log(helper.geometry.boundingBox);
-                    
-                    console.log(child);
-                    child.geometry.computeBoundingBox();
-					var width = Math.abs(child.geometry.boundingBox.min.x);
-					var height = child.geometry.boundingBox.max.y;
-					var length = Math.abs(child.geometry.boundingBox.min.z);
-					child.position.set(width, height, -length);
+                    if(child.material.map) {
+                        child.material.map.anisotropy = 16; 
+                    }
                 }
             } );
 
-			//gltfScene.position.set(0, 0, 0);
             scene.add(gltfScene);
         },
         function (xhr) {

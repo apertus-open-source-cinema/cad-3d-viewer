@@ -45,14 +45,14 @@ RGBELoader.prototype = Object.assign( Object.create( DataTextureLoader.prototype
 
 				switch ( rgbe_error_code ) {
 
-				case rgbe_read_error: console.error( 'THREE.RGBELoader Read Error: ' + ( msg || '' ) );
-					break;
-				case rgbe_write_error: console.error( 'THREE.RGBELoader Write Error: ' + ( msg || '' ) );
-					break;
-				case rgbe_format_error: console.error( 'THREE.RGBELoader Bad File Format: ' + ( msg || '' ) );
-					break;
-				default:
-				case rgbe_memory_error: console.error( 'THREE.RGBELoader: Error: ' + ( msg || '' ) );
+					case rgbe_read_error: console.error( 'THREE.RGBELoader Read Error: ' + ( msg || '' ) );
+						break;
+					case rgbe_write_error: console.error( 'THREE.RGBELoader Write Error: ' + ( msg || '' ) );
+						break;
+					case rgbe_format_error: console.error( 'THREE.RGBELoader Bad File Format: ' + ( msg || '' ) );
+						break;
+					default:
+					case rgbe_memory_error: console.error( 'THREE.RGBELoader: Error: ' + ( msg || '' ) );
 
 				}
 
@@ -372,49 +372,49 @@ RGBELoader.prototype = Object.assign( Object.create( DataTextureLoader.prototype
 
 				switch ( this.type ) {
 
-				case UnsignedByteType:
+					case UnsignedByteType:
 
-					var data = image_rgba_data;
-					var format = RGBEFormat; // handled as THREE.RGBAFormat in shaders
-					var type = UnsignedByteType;
-					break;
+						var data = image_rgba_data;
+						var format = RGBEFormat; // handled as THREE.RGBAFormat in shaders
+						var type = UnsignedByteType;
+						break;
 
-				case FloatType:
+					case FloatType:
 
-					var numElements = ( image_rgba_data.length / 4 ) * 3;
-					var floatArray = new Float32Array( numElements );
+						var numElements = ( image_rgba_data.length / 4 ) * 3;
+						var floatArray = new Float32Array( numElements );
 
-					for ( var j = 0; j < numElements; j ++ ) {
+						for ( var j = 0; j < numElements; j ++ ) {
 
-						RGBEByteToRGBFloat( image_rgba_data, j * 4, floatArray, j * 3 );
+							RGBEByteToRGBFloat( image_rgba_data, j * 4, floatArray, j * 3 );
 
-					}
+						}
 
-					var data = floatArray;
-					var format = RGBFormat;
-					var type = FloatType;
-					break;
+						var data = floatArray;
+						var format = RGBFormat;
+						var type = FloatType;
+						break;
 
-				case HalfFloatType:
+					case HalfFloatType:
 
-					var numElements = ( image_rgba_data.length / 4 ) * 3;
-					var halfArray = new Uint16Array( numElements );
+						var numElements = ( image_rgba_data.length / 4 ) * 3;
+						var halfArray = new Uint16Array( numElements );
 
-					for ( var j = 0; j < numElements; j ++ ) {
+						for ( var j = 0; j < numElements; j ++ ) {
 
-						RGBEByteToRGBHalf( image_rgba_data, j * 4, halfArray, j * 3 );
+							RGBEByteToRGBHalf( image_rgba_data, j * 4, halfArray, j * 3 );
 
-					}
+						}
 
-					var data = halfArray;
-					var format = RGBFormat;
-					var type = HalfFloatType;
-					break;
+						var data = halfArray;
+						var format = RGBFormat;
+						var type = HalfFloatType;
+						break;
 
-				default:
+					default:
 
-					console.error( 'THREE.RGBELoader: unsupported type: ', this.type );
-					break;
+						console.error( 'THREE.RGBELoader: unsupported type: ', this.type );
+						break;
 
 				}
 
@@ -449,32 +449,32 @@ RGBELoader.prototype = Object.assign( Object.create( DataTextureLoader.prototype
 
 			switch ( texture.type ) {
 
-			case UnsignedByteType:
+				case UnsignedByteType:
 
-				texture.encoding = RGBEEncoding;
-				texture.minFilter = NearestFilter;
-				texture.magFilter = NearestFilter;
-				texture.generateMipmaps = false;
-				texture.flipY = true;
-				break;
+					texture.encoding = RGBEEncoding;
+					texture.minFilter = NearestFilter;
+					texture.magFilter = NearestFilter;
+					texture.generateMipmaps = false;
+					texture.flipY = true;
+					break;
 
-			case FloatType:
+				case FloatType:
 
-				texture.encoding = LinearEncoding;
-				texture.minFilter = LinearFilter;
-				texture.magFilter = LinearFilter;
-				texture.generateMipmaps = false;
-				texture.flipY = true;
-				break;
+					texture.encoding = LinearEncoding;
+					texture.minFilter = LinearFilter;
+					texture.magFilter = LinearFilter;
+					texture.generateMipmaps = false;
+					texture.flipY = true;
+					break;
 
-			case HalfFloatType:
+				case HalfFloatType:
 
-				texture.encoding = LinearEncoding;
-				texture.minFilter = LinearFilter;
-				texture.magFilter = LinearFilter;
-				texture.generateMipmaps = false;
-				texture.flipY = true;
-				break;
+					texture.encoding = LinearEncoding;
+					texture.minFilter = LinearFilter;
+					texture.magFilter = LinearFilter;
+					texture.generateMipmaps = false;
+					texture.flipY = true;
+					break;
 
 			}
 
