@@ -18,11 +18,16 @@ var currentModel = null;
 
 var timeline = null
 
+var renderRequested = false;
+
 const loader = new GLTFLoader();
 
-document.getElementById('flip').addEventListener('click', flip_model);
+const flipButton = document.getElementById('flip');
+flipButton.addEventListener('click', flip_model);
 
 function flip_model() {
+    flipButton.disabled = true;
+
     var boundingBox = new THREE.Box3().setFromObject(currentModel);
     var rotation = currentModel.rotation.x
     var rotationAngle = 0;
@@ -38,6 +43,9 @@ function flip_model() {
         easing: 'easeInOutExpo',
         duration: 1000,
         update: camera.updateProjectionMatrix(),
+        begin: function(anim) {flipButton.disabled = true},
+        complete: function(anim) {flipButton.disabled = false},
+        update: function(anim) {requestRenderIfNotRequested();}
       }).add({targets: currentModel.position, y: boundingBox.max.y * 2})
         .add({targets: currentModel.rotation, x: rotationAngle})
         .add({targets: currentModel.position, y: heightOffset});
@@ -53,6 +61,7 @@ function setup_general() {
     
     controls = new OrbitControls(camera, document.querySelector('#app'));
     controls.target.set(0.0, 0.05, 0.0);
+    //controls.enableDamping = true;
 
     scene = new THREE.Scene();
 }
@@ -184,6 +193,7 @@ function load_environment() {
             } );
 
             scene.add(gltfScene);
+            requestRenderIfNotRequested();
         },
         function (xhr) {
             console.log(file_path + ': ' + (xhr.loaded / xhr.total) * 100 + '% loaded');
@@ -233,6 +243,7 @@ function load_object(model) {
             } );
 
             scene.add(gltfScene);
+            requestRenderIfNotRequested();
         },
         function (xhr) {
             console.log(file_path + ': ' + (xhr.loaded / xhr.total) * 100 + '% loaded');
@@ -241,6 +252,14 @@ function load_object(model) {
             console.error(error);
         });
 }
+
+function requestRenderIfNotRequested() {
+    if (!renderRequested) {
+      renderRequested = true;
+      requestAnimationFrame(render);
+    }
+  }
+   
 
 function init() {
     setup_general();
@@ -252,14 +271,13 @@ function init() {
     load_environment();
 	load_object("cap-bottom-v5.gltf")
 
-    render();
+    controls.addEventListener('change', requestRenderIfNotRequested);
 }
 
 function render() {
-	requestAnimationFrame(render);
+    renderRequested = undefined;
 
 	controls.update();
-
 	renderer.render(scene, camera);
 }
 
