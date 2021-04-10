@@ -4,6 +4,7 @@ import * as THREE from './three.js/three.module.js';
 import { OrbitControls } from './three.js/controls/OrbitControls.js';
 import { GLTFLoader } from './three.js/loaders/GLTFLoader.js';
 import { RGBELoader } from './three.js/loaders/RGBELoader.js';
+import { GUI } from './three.js/libs/dat.gui.module.js';
 
 import anime from './anime.es.js';
 
@@ -11,16 +12,18 @@ var camera = null;
 var controls = null;
 var renderer = null;
 var scene = null;
-
+var gui = null;
 var container = null;
-
 var currentModel = null;
-
 var timeline = null
-
 var renderRequested = false;
 
 const loader = new GLTFLoader();
+
+const material = {
+	roughness: 0.5,
+	metalness: 0.5
+};
 
 const flipButton = document.getElementById('flip');
 flipButton.addEventListener('click', flip_model);
@@ -239,6 +242,12 @@ function load_object(model) {
                     if(child.material.map) {
                         child.material.map.anisotropy = 16; 
                     }
+					// assign metal material to object
+					const aluminummaterial = new THREE.MeshPhysicalMaterial( {color: 0xb1b1b1} );
+					aluminummaterial.roughness = 0.5;
+					aluminummaterial.metal = 0.5;
+					aluminummaterial.specular = 0.5;
+					child.material = aluminummaterial;
                 }
             } );
 
@@ -261,6 +270,18 @@ function requestRenderIfNotRequested() {
   }
    
 
+function load_gui() {
+	gui = new GUI();
+	const object_material_folder = gui.addFolder( 'Object Material' );
+	object_material_folder.open();
+	object_material_folder.add( material, 'roughness', 0, 1, 0.1 ).onChange( function () {
+		currentModel.material.roughness = material.roughness;
+	} );
+	object_material_folder.add( material, 'metalness', 0, 1, 0.1 ).onChange( function () {
+		currentModel.material.metalness = state.material.metalness;
+	} );
+}
+
 function init() {
     setup_general();
     setup_renderer();
@@ -270,6 +291,8 @@ function init() {
 
     load_environment();
 	load_object("cap-bottom-v5.gltf")
+	
+	load_gui();
 
     controls.addEventListener('change', requestRenderIfNotRequested);
 }
