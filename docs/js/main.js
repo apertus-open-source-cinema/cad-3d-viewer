@@ -25,12 +25,10 @@ const material = {
 	metalness: 0.5
 };
 
-const flipButton = document.getElementById('flip');
-flipButton.addEventListener('click', flip_model);
+// const flipButton = document.getElementById('flip');
+// flipButton.addEventListener('click', flip_model);
 
 function flip_model() {
-    flipButton.disabled = true;
-
     var boundingBox = new THREE.Box3().setFromObject(currentModel);
     var rotation = currentModel.rotation.x
     var rotationAngle = 0;
@@ -46,8 +44,8 @@ function flip_model() {
         easing: 'linear',
         duration: 200,
         update: camera.updateProjectionMatrix(),
-        begin: function(anim) {flipButton.disabled = true},
-        complete: function(anim) {flipButton.disabled = false},
+        //begin: function(anim) {flipButton.disabled = true},
+        //complete: function(anim) {flipButton.disabled = false},
         update: function(anim) {requestRenderIfNotRequested();}
       }).add({targets: currentModel.position, y: boundingBox.max.y * 2})
         .add({targets: currentModel.rotation, x: rotationAngle})
@@ -271,15 +269,28 @@ function requestRenderIfNotRequested() {
    
 
 function load_gui() {
+    controls.enabled = false;
+
 	gui = new GUI();
 	const object_material_folder = gui.addFolder( 'Object Material' );
 	object_material_folder.open();
-	object_material_folder.add( material, 'roughness', 0, 1, 0.1 ).onChange( function () {
-		currentModel.material.roughness = material.roughness;
+	object_material_folder.add( material, 'roughness', 0, 1, 0.1 ).onChange( function (value) {
+		currentModel.children[0].material.roughness = value;
+        currentModel.children[0].material.needsUpdate = true;
+        requestRenderIfNotRequested();
 	} );
-	object_material_folder.add( material, 'metalness', 0, 1, 0.1 ).onChange( function () {
-		currentModel.material.metalness = state.material.metalness;
+	object_material_folder.add( material, 'metalness', 0, 1, 0.1 ).onChange( function (value) {
+		currentModel.children[0].material.metalness = value;
+        currentModel.children[0].material.needsUpdate = true;
+        requestRenderIfNotRequested();
 	} );
+
+    const actions_folder = gui.addFolder( 'Action' );
+    actions_folder.open();
+    var obj = { flip:function(){ flip_model(); }};
+    actions_folder.add(obj,'flip').name('Flip');
+
+    controls.enabled = true;
 }
 
 function init() {
