@@ -145,20 +145,10 @@ function setup_renderer() {
 }
 
 function setup_hdr_background() {
-    var environmentTexture = new RGBELoader().load('data/textures/hdri/abstract_room.hdr', () => {
-        const pmremGenerator = new THREE.PMREMGenerator(renderer);
-        var tex = pmremGenerator.fromEquirectangular(environmentTexture);
-
-        var options = {
-            generateMipmaps: true,
-            minFilter: THREE.LinearMipmapLinearFilter,
-            magFilter: THREE.LinearFilter
-        };
-
-        var envTexture = new THREE.WebGLCubeRenderTarget(4096, options).fromEquirectangularTexture(renderer, environmentTexture);
-        // scene.background = envTexture.texture;
-        mainScene.environment = envTexture.texture;
-    });
+    var environmentTexture = new THREE.TextureLoader().load('data/textures/hdri/HDR_029_Sky_Cloudy_Ref.png');
+    environmentTexture.mapping = THREE.EquirectangularReflectionMapping;
+    //environmentTexture.encoding = THREE.sRGBEncoding;
+    mainScene.environment = environmentTexture;
 }
 
 function setup_light() {
@@ -421,7 +411,7 @@ function raycast() {
         anime({
             duration: 1000,
             update: function (anim) {
-                camPos.lerp(targetPos, anim.progress / 100);
+                camPos.lerp(targetPos, anim.progress / 100.0);
                 camera.position.copy(camPos);
                 camera.lookAt(0, 0, 0);
                 requestRenderIfNotRequested();
