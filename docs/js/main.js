@@ -276,6 +276,9 @@ function load_object(model, scene, alignOrigin = false) {
 
             if (scene == navigationScene)
                 navigationCube = gltfScene;
+            else {
+                currentModel = gltfScene;
+            }
             //currentModel.children[0].dynamic = true;
 
             var boundingBox = new THREE.Box3().setFromObject(gltfScene);
