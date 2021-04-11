@@ -141,7 +141,7 @@ function setup_renderer() {
 }
 
 function setup_hdr_background() {
-    var environmentTexture = new RGBELoader().load('data/textures/hdri/HDR_029_Sky_Cloudy_Ref.hdr', () => {
+    var environmentTexture = new RGBELoader().load('data/textures/hdri/abstract_room.hdr', () => {
         const pmremGenerator = new THREE.PMREMGenerator(renderer);
         var tex = pmremGenerator.fromEquirectangular(environmentTexture);
 
