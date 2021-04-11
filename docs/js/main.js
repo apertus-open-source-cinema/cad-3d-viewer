@@ -145,7 +145,7 @@ function setup_renderer() {
 }
 
 function setup_hdr_background() {
-    var environmentTexture = new THREE.TextureLoader().load('data/textures/hdri/HDR_029_Sky_Cloudy_Ref.png');
+    var environmentTexture = new THREE.TextureLoader().load('data/textures/hdri/abstract_room.png');
     environmentTexture.mapping = THREE.EquirectangularReflectionMapping;
     //environmentTexture.encoding = THREE.sRGBEncoding;
     mainScene.environment = environmentTexture;
