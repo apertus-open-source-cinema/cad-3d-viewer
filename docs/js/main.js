@@ -162,6 +162,12 @@ function setup_hdr_background() {
 }
 
 function setup_light() {
+	
+	// remember the axis are:
+	// X right
+	// Y up
+	// Z back
+	
     var hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
     hemiLight.position.set(0, 300, 0);
     navigationScene.add(hemiLight);
@@ -186,10 +192,10 @@ function setup_light() {
     mainScene.add(light1);
 
     const helper1 = new THREE.SpotLightHelper(light1);
-    // scene.add( helper1 );
+    //mainScene.add( helper1 );
 
     const light2 = new THREE.SpotLight(0xffffff, 10, 2, THREE.MathUtils.degToRad(15), 0.3);
-    light2.position.set(-0.4, 0.85, -0.2);
+    light2.position.set(-0.4, 0.45, -0.2);
     light2.castShadow = true;
     mainScene.add(light2.target);
     light2.target.position.set(0.1, 0, -0.1);
@@ -208,7 +214,7 @@ function setup_light() {
     mainScene.add(light2);
 
     const helper2 = new THREE.SpotLightHelper(light2);
-    // scene.add( helper2 );
+    //mainScene.add( helper2 );
 
     const light3 = new THREE.SpotLight(0xffffff, 5, 3, THREE.MathUtils.degToRad(5), 0.5);
     light3.position.set(0.8, 0.4, -2);
@@ -230,7 +236,7 @@ function setup_light() {
     mainScene.add(light3);
 
     const helper3 = new THREE.SpotLightHelper(light3);
-    // scene.add( helper3 );
+    //mainScene.add( helper3 );
 }
 
 function load_environment() {
