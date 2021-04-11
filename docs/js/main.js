@@ -30,9 +30,12 @@ var navigationOffset = 10;
 const loader = new GLTFLoader();
 
 const material = {
-    roughness: 0.5,
-    metalness: 0.5,
-	reflectivity: 0.5
+	color: 0xb1b1b1,
+    roughness: 0.2,
+    metalness: 0.9,
+	reflectivity: 0,
+	clearcoat: 0.6,
+	clearcoatRoughness: 0.6
 };
 
 // const flipButton = document.getElementById('flip');
@@ -305,9 +308,11 @@ function load_object(model, scene, alignOrigin = false) {
                     }
                     // assign metal material to object
                     const aluminummaterial = new THREE.MeshPhysicalMaterial({ color: 0xb1b1b1 });
-                    aluminummaterial.roughness = 0.5;
-                    aluminummaterial.metal = 0.5;
-                    aluminummaterial.reflectivity = 0.5;
+                    aluminummaterial.roughness = material.roughness;
+                    aluminummaterial.metalness = material.metalness;
+                    aluminummaterial.reflectivity = material.reflectivity;
+					aluminummaterial.clearcoat = material.clearcoat;
+					aluminummaterial.clearcoatRoughness = material.clearcoatRoughness;
                     child.material = aluminummaterial;
                 }
             });
@@ -337,6 +342,11 @@ function load_gui() {
     gui = new GUI();
     const object_material_folder = gui.addFolder('Object Material');
     object_material_folder.open();
+	object_material_folder.addColor(material, 'color').onChange(function (value) {
+        currentModel.children[0].material.color = new THREE.Color(value);
+        currentModel.children[0].material.needsUpdate = true;
+        requestRenderIfNotRequested();
+    });
     object_material_folder.add(material, 'roughness', 0, 1, 0.01).onChange(function (value) {
         currentModel.children[0].material.roughness = value;
         currentModel.children[0].material.needsUpdate = true;
@@ -349,6 +359,16 @@ function load_gui() {
     });
 	object_material_folder.add(material, 'reflectivity', 0, 1, 0.01).onChange(function (value) {
         currentModel.children[0].material.reflectivity = value;
+        currentModel.children[0].material.needsUpdate = true;
+        requestRenderIfNotRequested();
+    });
+	object_material_folder.add(material, 'clearcoat', 0, 1, 0.01).onChange(function (value) {
+        currentModel.children[0].material.clearcoat = value;
+        currentModel.children[0].material.needsUpdate = true;
+        requestRenderIfNotRequested();
+    });
+		object_material_folder.add(material, 'clearcoatRoughness', 0, 1, 0.01).onChange(function (value) {
+        currentModel.children[0].material.clearcoatRoughness = value;
         currentModel.children[0].material.needsUpdate = true;
         requestRenderIfNotRequested();
     });
