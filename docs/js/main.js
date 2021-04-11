@@ -336,12 +336,12 @@ function load_gui() {
     gui = new GUI();
     const object_material_folder = gui.addFolder('Object Material');
     object_material_folder.open();
-    object_material_folder.add(material, 'roughness', 0, 1, 0.1).onChange(function (value) {
+    object_material_folder.add(material, 'roughness', 0, 1, 0.01).onChange(function (value) {
         currentModel.children[0].material.roughness = value;
         currentModel.children[0].material.needsUpdate = true;
         requestRenderIfNotRequested();
     });
-    object_material_folder.add(material, 'metalness', 0, 1, 0.1).onChange(function (value) {
+    object_material_folder.add(material, 'metalness', 0, 1, 0.01).onChange(function (value) {
         currentModel.children[0].material.metalness = value;
         currentModel.children[0].material.needsUpdate = true;
         requestRenderIfNotRequested();
