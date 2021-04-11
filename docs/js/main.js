@@ -31,7 +31,8 @@ const loader = new GLTFLoader();
 
 const material = {
     roughness: 0.5,
-    metalness: 0.5
+    metalness: 0.5,
+	reflectivity: 0.5
 };
 
 // const flipButton = document.getElementById('flip');
@@ -306,7 +307,7 @@ function load_object(model, scene, alignOrigin = false) {
                     const aluminummaterial = new THREE.MeshPhysicalMaterial({ color: 0xb1b1b1 });
                     aluminummaterial.roughness = 0.5;
                     aluminummaterial.metal = 0.5;
-                    aluminummaterial.specular = 0.5;
+                    aluminummaterial.reflectivity = 0.5;
                     child.material = aluminummaterial;
                 }
             });
@@ -343,6 +344,11 @@ function load_gui() {
     });
     object_material_folder.add(material, 'metalness', 0, 1, 0.01).onChange(function (value) {
         currentModel.children[0].material.metalness = value;
+        currentModel.children[0].material.needsUpdate = true;
+        requestRenderIfNotRequested();
+    });
+	object_material_folder.add(material, 'reflectivity', 0, 1, 0.01).onChange(function (value) {
+        currentModel.children[0].material.reflectivity = value;
         currentModel.children[0].material.needsUpdate = true;
         requestRenderIfNotRequested();
     });
