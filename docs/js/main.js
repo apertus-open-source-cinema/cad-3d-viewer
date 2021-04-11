@@ -368,6 +368,37 @@ function init() {
     controls.addEventListener('change', requestRenderIfNotRequested);
     window.addEventListener('resize', onWindowResize);
     container.addEventListener('mousemove', onMouseMove, false);
+
+    renderer.domElement.addEventListener('click', raycast, false);
+}
+
+function raycast() {
+    var normal = undefined;
+
+    raycaster.setFromCamera(mouse, navigationCamera);
+    const intersects = raycaster.intersectObjects([navigationCube], true);
+    if (intersects.length != 0) {
+        normal = intersects[0].face.normal;
+    }
+
+    if(normal) {
+        const targetOrientation = new THREE.Quaternion().set(normal.x, normal.y, normal.z, 1).normalize();
+        var camPos = camera.position;
+        console.log(camPos);
+        var targetPos = normal;
+        console.log(targetPos);
+        targetPos.multiplyScalar(camera.position.length());
+        console.log(targetPos)
+        anime({
+            duration: 1000,
+            update: function (anim) {
+                camPos.lerp(targetPos, anim.progress / 100);
+                camera.position.copy(camPos);
+                camera.lookAt(0, 0, 0);
+                requestRenderIfNotRequested();
+            }
+        });
+    }
 }
 
 var insetWidth = 150;
