@@ -386,7 +386,7 @@ function init() {
 
     load_environment();
     load_object("cap-bottom-v5.gltf", mainScene, true)
-    load_object("multi_material_test.gltf", navigationScene)
+    load_object("orientation_cube_v01.gltf", navigationScene)
 
     load_gui();
 
