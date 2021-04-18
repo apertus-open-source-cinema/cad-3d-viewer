@@ -15,7 +15,7 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "AXIOMCap",
+            "name" : "AXIOM Lens Cap",
             "rotation" : [
                 0.7071068286895752,
                 0,
@@ -110,7 +110,7 @@
     "buffers" : [
         {
             "byteLength" : 680160,
-            "uri" : "axiom-lens-cap-v01.bin"
+            "uri" : "axiom_lens_cap_v01.bin"
         }
     ]
 }
