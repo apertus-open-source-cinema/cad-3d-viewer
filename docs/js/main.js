@@ -1,471 +1,242 @@
-'use strict';
+"use strict";
 
-import * as THREE from './three.js/three.module.js';
-import { OrbitControls } from './three.js/controls/OrbitControls.js';
-import { GLTFLoader } from './three.js/loaders/GLTFLoader.js';
-import { RGBELoader } from './three.js/loaders/RGBELoader.js';
-import { GUI } from './three.js/libs/dat.gui.module.js';
+import * as THREE from "./three.js/three.module.js";
+import { OrbitControls } from "./three.js/controls/OrbitControls.js";
+import { GUI } from "./three.js/libs/dat.gui.module.js";
+import { NavigationCube } from "./scenes/NavigationCube.js";
+import { MainScene } from "./scenes/MainScene.js";
+import "./pubsub.js";
 
-import anime from './anime.es.js';
+export class App {
+  renderContainer = undefined;
+  uiContainer = undefined;
+  scene = undefined;
+  camera = undefined;
+  controls = undefined;
+  renderer = undefined;
 
-var camera = null;
-var controls = null;
-var renderer = null;
-var mainScene = null;
-var gui = null;
-var container = null;
-var currentModel = null;
-var timeline = null
-var renderRequested = false;
+  isRenderingActive = false;
 
-var selectedFace = null;
+  clock = new THREE.Clock();
 
-var navigationScene = null;
-var navigationCamera = null;
-var navigationCube = null;
-var navigationWidth = 150;
-var navigationHeight = 150;
-var navigationOffset = 10;
+  cameraTargetPosition = new THREE.Vector3(0, 0.06, 0);
 
-const loader = new GLTFLoader();
+  animationTimeline = undefined;
 
-const material = {
-	color: 0xb1b1b1,
-    roughness: 0.2,
-    metalness: 0.9,
-	reflectivity: 0,
-	clearcoat: 0.6,
-	clearcoatRoughness: 0.6
-};
+  Init() {
+    this.renderContainer = document.getElementById("render_canvas");
+    this.uiContainer = document.getElementById("ui");
 
-// const flipButton = document.getElementById('flip');
-// flipButton.addEventListener('click', flip_model);
+    this.SetupScene();
 
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
+    this.SetupGeneral();
+    this.SetupRenderer();
 
+    this.SetupHDR();
+    this.SetupGUI();
 
-// TODO: Needs a fix
-function onWindowResize() {
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.target.copy(this.cameraTargetPosition);
+    this.controls.update();
 
-    camera.aspect = container.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+    this.controls.maxPolarAngle = Math.PI / 2;
+    this.controls.addEventListener("change", () => {
+      // if (this.controls.target.y < 0) {
+      //   this.controls.target.y = 0;
+      // }
+      this.RequestFrame();
+    });
+  }
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-}
-
-function onMouseMove(event) {
-    event.preventDefault();
-
-    // calculate mouse position in normalized device coordinates
-    // (-1 to +1) for both components
-
-    mouse.x = ((event.clientX - navigationOffset) / navigationWidth) * 2 - 1;
-    mouse.y = - ((event.clientY - container.height + navigationHeight + navigationOffset) / navigationHeight) * 2 + 1;
-
-    //mouse.x = ( event.clientX / container.clientWidth ) * 2 - 1;
-    //mouse.y = - ( event.clientY / container.clientHeight ) * 2 + 1;
-    // console.log(mouse);
-
-    requestRenderIfNotRequested();
-}
-
-function flip_model() {
-    var boundingBox = new THREE.Box3().setFromObject(currentModel);
-    var rotation = currentModel.rotation.x
-    var rotationAngle = 0;
-    var heightOffset = -boundingBox.min.y;
-
-    if (rotation == 0) {
-        rotationAngle = THREE.Math.degToRad(180);
-        heightOffset = boundingBox.max.y;
-    }
-
-    anime.timeline({
-        easing: 'linear',
-        duration: 200,
-        update: camera.updateProjectionMatrix(),
-        //begin: function(anim) {flipButton.disabled = true},
-        //complete: function(anim) {flipButton.disabled = false},
-        update: function (anim) { requestRenderIfNotRequested(); }
-    }).add({ targets: currentModel.position, y: boundingBox.max.y * 2 })
-        .add({ targets: currentModel.rotation, x: rotationAngle })
-        .add({ targets: currentModel.position, y: heightOffset });
-}
-
-function setup_general() {
-    container = document.getElementById('render_canvas');
-
-    var aspectRatio = container.clientWidth / container.clientHeight;
+  SetupGeneral() {
+    var aspectRatio =
+      this.renderContainer.clientWidth / this.renderContainer.clientHeight;
     console.log("Aspect ratio: " + aspectRatio);
 
-    camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.01, 1000);
-    camera.position.set(-0.3, 0.3, 0.5);
-    camera.lookAt(0.5, 0.3, 0.5)
-    camera.setFocalLength(85);
+    this.camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.01, 1000);
+    this.camera.position.set(-0.3, 0.3, 0.5);
+    this.camera.lookAt(this.cameraTargetPosition);
+    this.camera.setFocalLength(85);
+    this.camera.updateProjectionMatrix();
 
-    const size = 0.2;
-    const near = 0;
-    const far = 2;
-    aspectRatio = navigationWidth / navigationHeight;
-    navigationCamera = new THREE.OrthographicCamera((-aspectRatio * size) / 2, (aspectRatio * size) / 2, size / 2, -size / 2, near, far);
-    // navigationCamera.zoom = 0.2;
-    navigationCamera.position.set(0, 0, 1);
-    navigationCamera.updateProjectionMatrix();
+    this.animationTimeline = document.getElementById("timeline");
+    console.log(this.animationTimeline);
 
+    this.animationTimeline.addEventListener("click", (e) =>
+      this.PlayAnimation(e)
+    );
+  }
 
-    //camera.lookAt(0.5, 0.3, 0.5)
-    //camera.setFocalLength(85);
+  SetupRenderer() {
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      canvas: this.renderContainer,
+    });
+    this.renderer.setSize(
+      this.renderContainer.clientWidth,
+      this.renderContainer.clientHeight
+    );
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setClearColor(0x223344);
 
-    controls = new OrbitControls(camera, document.querySelector('#app'));
-    controls.target.set(0.0, 0.05, 0.0);
-    //controls.enableDamping = true;
+    this.renderer.physicallyCorrectLights = true;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1;
+    this.renderer.gammaFactor = 2.2;
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
 
-    mainScene = new THREE.Scene();
-    navigationScene = new THREE.Scene();
-}
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  }
 
-function setup_renderer() {
-    renderer = new THREE.WebGLRenderer({ antialias: true, canvas: container });
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setClearColor(0x111522);
+  SetupScene() {
+    this.scene = new MainScene();
+    var token = PubSub.subscribe("scene_loaded", () => {
+      this.SetupTimeline();
+      this.RequestFrame();
+    });
 
-    renderer.physicallyCorrectLights = true;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1;
-    renderer.gammaFactor = 2.2;
-    renderer.outputEncoding = THREE.sRGBEncoding;
+    PubSub.subscribe("scene_animation_started", () => {
+      this.EnableAnimationLoop();
+    });
 
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    PubSub.subscribe("scene_animation_finished", () => {
+      this.DisableAnimationLoop();
+    });
 
-    // document.body.appendChild(renderer.domElement);
-}
+    PubSub.subscribe("scene_update_required", () => {
+      this.RequestFrame();
+    });
+  }
 
-function setup_hdr_background() {
-    var environmentTexture = new THREE.TextureLoader().load('data/textures/hdri/abstract_room.png');
+  // TODO: replace with real HDR
+  SetupHDR() {
+    var environmentTexture = new THREE.TextureLoader().load(
+      "data/textures/hdri/abstract_room.png"
+    );
     environmentTexture.mapping = THREE.EquirectangularReflectionMapping;
-    //environmentTexture.encoding = THREE.sRGBEncoding;
-    mainScene.environment = environmentTexture;
-}
+    environmentTexture.encoding = THREE.sRGBEncoding;
+    this.scene.scene.environment = environmentTexture;
+    //this.scene.scene.background = environmentTexture;
+  }
 
-function setup_light() {
-	
-	// remember the axis are:
-	// X right
-	// Y up
-	// Z back
-	
-    var hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
-    hemiLight.position.set(0, 300, 0);
-    navigationScene.add(hemiLight);
-
-    const light1 = new THREE.SpotLight(0xffffff, 5, 2, THREE.MathUtils.degToRad(13), 0.3);
-    light1.position.set(0.4, 0.4, 0.7);
-    light1.castShadow = true;
-    mainScene.add(light1.target);
-    light1.target.position.set(0.1, 0, -0.1);
-
-    light1.shadow.bias = -0.001;
-
-    //Set up shadow properties for the light
-    light1.shadow.mapSize.width = 2048; // default
-    light1.shadow.mapSize.height = 2048; // default
-    light1.shadow.camera.near = 0.5; // default
-    light1.shadow.camera.far = 2; // default
-    light1.shadow.radius = 8;
-
-    //light1.shadow.camera.fov = 20; // default
-
-    mainScene.add(light1);
-
-    const helper1 = new THREE.SpotLightHelper(light1);
-    //mainScene.add( helper1 );
-
-    const light2 = new THREE.SpotLight(0xffffff, 10, 2, THREE.MathUtils.degToRad(15), 0.3);
-    light2.position.set(-0.4, 0.45, -0.2);
-    light2.castShadow = true;
-    mainScene.add(light2.target);
-    light2.target.position.set(0.1, 0, -0.1);
-
-    light2.shadow.bias = -0.001;
-
-    //Set up shadow properties for the light
-    light2.shadow.mapSize.width = 2048; // default
-    light2.shadow.mapSize.height = 2048; // default
-    light2.shadow.camera.near = 0.5; // default
-    light2.shadow.camera.far = 2; // default
-    light2.shadow.radius = 8;
-
-    //light2.shadow.camera.fov = 25; // default
-
-    mainScene.add(light2);
-
-    const helper2 = new THREE.SpotLightHelper(light2);
-    //mainScene.add( helper2 );
-
-    const light3 = new THREE.SpotLight(0xffffff, 5, 3, THREE.MathUtils.degToRad(5), 0.5);
-    light3.position.set(0.8, 0.4, -2);
-    light3.castShadow = true;
-    mainScene.add(light3.target);
-    light3.target.position.set(0.1, 0, -0.1);
-
-    light3.shadow.bias = -0.001;
-
-    //Set up shadow properties for the light
-    light3.shadow.mapSize.width = 2048; // default
-    light3.shadow.mapSize.height = 2048; // default
-    light3.shadow.camera.near = 0.5; // default
-    light3.shadow.camera.far = 2; // default
-    light3.shadow.radius = 8;
-
-    //light2.shadow.camera.fov = 25; // default
-
-    mainScene.add(light3);
-
-    const helper3 = new THREE.SpotLightHelper(light3);
-    //mainScene.add( helper3 );
-}
-
-function load_environment() {
-    let file_path = 'data/models/environment/environment_V01.gltf';
-
-    loader.load(
-        file_path,
-        function (gltf) {
-            const gltfScene = gltf.scene;
-
-            gltfScene.traverse(function (child) {
-                if (child.isMesh) {
-                    console.info("Enable shadow cast/receive");
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                    if (child.material.map) child.material.map.anisotropy = 16;
-
-                    // child.material.encoding = THREE.sRGBEncoding;
-                }
-            });
-
-            mainScene.add(gltfScene);
-            requestRenderIfNotRequested();
-        },
-        function (xhr) {
-            console.log(file_path + ': ' + (xhr.loaded / xhr.total) * 100 + '% loaded');
-        },
-        function (error) {
-            console.error(error);
-        });
-
-    // const geometry = new THREE.SphereGeometry( 0.01, 32, 32 );
-    // const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-    // const sphere = new THREE.Mesh( geometry, material );
-    // sphere.position.set(0, 0.02, 0);
-    // sphere.castShadow = true;
-    // scene.add( sphere );
-}
-
-function load_object(model, scene, alignOrigin = false) {
-    let file_path = 'data/models/' + model;
-
-    loader.load(
-        file_path,
-        function (gltf) {
-            const gltfScene = gltf.scene;
-
-            if (scene == navigationScene)
-                navigationCube = gltfScene;
-            else {
-                currentModel = gltfScene;
-            }
-            //currentModel.children[0].dynamic = true;
-
-            var boundingBox = new THREE.Box3().setFromObject(gltfScene);
-            //console.log(boundingBox)
-            if (alignOrigin) {
-                var width = Math.abs(boundingBox.min.x);
-                var height = Math.abs(boundingBox.min.y);
-                var length = Math.abs(boundingBox.max.z);
-                gltfScene.position.set(width, height, -length);
-            }
-            // var helper = new THREE.BoxHelper(gltfScene);
-            // helper.geometry.computeBoundingBox();
-            // scene.add(helper);           
-
-            gltfScene.traverse(function (child) {
-                console.log("Child:" + child);
-
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                    if (child.material.map) {
-                        child.material.map.anisotropy = 16;
-                    }
-                    // assign metal material to object
-                    const aluminummaterial = new THREE.MeshPhysicalMaterial({ color: 0xb1b1b1 });
-                    aluminummaterial.roughness = material.roughness;
-                    aluminummaterial.metalness = material.metalness;
-                    aluminummaterial.reflectivity = material.reflectivity;
-					aluminummaterial.clearcoat = material.clearcoat;
-					aluminummaterial.clearcoatRoughness = material.clearcoatRoughness;
-                    child.material = aluminummaterial;
-                }
-            });
-
-            scene.add(gltfScene);
-            requestRenderIfNotRequested();
-        },
-        function (xhr) {
-            console.log(file_path + ': ' + (xhr.loaded / xhr.total) * 100 + '% loaded');
-        },
-        function (error) {
-            console.error(error);
-        });
-}
-
-function requestRenderIfNotRequested() {
-    if (!renderRequested) {
-        renderRequested = true;
-        requestAnimationFrame(render);
+  SetupTimeline() {
+    for (var i = 0; i < this.scene.currentAnimations.length; i++) {
+      var li = document.createElement("li");
+      li.textContent = i;
+      li.setAttribute("animationIndex", i);
+      this.animationTimeline.appendChild(li);
     }
-}
+  }
 
+  SetupGUI() {
+    let material = this.scene.currentMaterial;
 
-function load_gui() {
-    controls.enabled = false;
-
-    gui = new GUI();
-    const object_material_folder = gui.addFolder('Object Material');
+    var gui = new GUI({ autoPlace: false });
+    gui.domElement.id = "dat_gui";
+    const object_material_folder = gui.addFolder("Object Material");
     object_material_folder.open();
-	object_material_folder.addColor(material, 'color').onChange(function (value) {
-        currentModel.children[0].material.color = new THREE.Color(value);
-        currentModel.children[0].material.needsUpdate = true;
-        requestRenderIfNotRequested();
-    });
-    object_material_folder.add(material, 'roughness', 0, 1, 0.01).onChange(function (value) {
-        currentModel.children[0].material.roughness = value;
-        currentModel.children[0].material.needsUpdate = true;
-        requestRenderIfNotRequested();
-    });
-    object_material_folder.add(material, 'metalness', 0, 1, 0.01).onChange(function (value) {
-        currentModel.children[0].material.metalness = value;
-        currentModel.children[0].material.needsUpdate = true;
-        requestRenderIfNotRequested();
-    });
-	object_material_folder.add(material, 'reflectivity', 0, 1, 0.01).onChange(function (value) {
-        currentModel.children[0].material.reflectivity = value;
-        currentModel.children[0].material.needsUpdate = true;
-        requestRenderIfNotRequested();
-    });
-	object_material_folder.add(material, 'clearcoat', 0, 1, 0.01).onChange(function (value) {
-        currentModel.children[0].material.clearcoat = value;
-        currentModel.children[0].material.needsUpdate = true;
-        requestRenderIfNotRequested();
-    });
-		object_material_folder.add(material, 'clearcoatRoughness', 0, 1, 0.01).onChange(function (value) {
-        currentModel.children[0].material.clearcoatRoughness = value;
-        currentModel.children[0].material.needsUpdate = true;
-        requestRenderIfNotRequested();
-    });
+    object_material_folder
+      .addColor(material, "color")
+      .onChange(() => this.UpdateSceneMaterial());
+    object_material_folder
+      .add(material, "roughness", 0, 1, 0.01)
+      .onChange(() => this.UpdateSceneMaterial());
+    object_material_folder
+      .add(material, "metalness", 0, 1, 0.01)
+      .onChange(() => this.UpdateSceneMaterial());
+    object_material_folder
+      .add(material, "reflectivity", 0, 1, 0.01)
+      .onChange(() => this.UpdateSceneMaterial());
+    object_material_folder
+      .add(material, "clearcoat", 0, 1, 0.01)
+      .onChange(() => this.UpdateSceneMaterial());
+    object_material_folder
+      .add(material, "clearcoatRoughness", 0, 1, 0.01)
+      .onChange(() => this.UpdateSceneMaterial());
 
-    const actions_folder = gui.addFolder('Action');
+    const actions_folder = gui.addFolder("Action");
     actions_folder.open();
-    var obj = { flip: function () { flip_model(); } };
-    actions_folder.add(obj, 'flip').name('Flip');
 
-    controls.enabled = true;
-}
+    var obj = {
+      flip: () => {
+        this.scene.FlipModel();
+      },
+    };
+    actions_folder.add(obj, "flip").name("Flip");
 
-function init() {
-    setup_general();
-    setup_renderer();
+    var uiContainer = document.getElementById("ui");
+    uiContainer.appendChild(gui.domElement);
+  }
 
-    setup_hdr_background();
-    setup_light();
+  UpdateSceneMaterial() {
+    console.log("Update material");
+    this.scene.UpdateMaterial();
+    //this.RequestFrame();
+  }
 
-    load_environment();
-    load_object("cap-bottom-v5.gltf", mainScene, true)
-    load_object("orientation_cube_v01.gltf", navigationScene)
+  Start() {
+    requestAnimationFrame(this.RenderFrame);
+  }
 
-    load_gui();
-
-    controls.addEventListener('change', requestRenderIfNotRequested);
-    window.addEventListener('resize', onWindowResize);
-    container.addEventListener('mousemove', onMouseMove, false);
-
-    renderer.domElement.addEventListener('click', raycast, false);
-}
-
-function raycast() {
-    var normal = undefined;
-
-    raycaster.setFromCamera(mouse, navigationCamera);
-    const intersects = raycaster.intersectObjects([navigationCube], true);
-    if (intersects.length != 0) {
-        normal = intersects[0].face.normal;
+  RequestFrame() {
+    //console.log("Requested frame");
+    if (this.isRenderingActive) {
+      return;
     }
 
-    if(normal) {
-        const targetOrientation = new THREE.Quaternion().set(normal.x, normal.y, normal.z, 1).normalize();
-        var camPos = camera.position;
-        console.log(camPos);
-        var targetPos = normal;
-        console.log(targetPos);
-        targetPos.multiplyScalar(camera.position.length());
-        console.log(targetPos)
-        anime({
-            duration: 1000,
-            update: function (anim) {
-                camPos.lerp(targetPos, anim.progress / 100.0);
-                camera.position.copy(camPos);
-                camera.lookAt(0, 0, 0);
-                requestRenderIfNotRequested();
-            }
-        });
+    this.isRenderingActive = true;
+    requestAnimationFrame(this.RenderFrame);
+  }
+
+  // TODO: Add delta time and smooth framerate
+  RenderFrame = () => {
+    //console.log("Render frame");
+    this.isRenderingActive = false;
+
+    if (this.animationEnabled) {
+      const deltaTime = this.clock.getDelta();
+      this.scene.animationMixer.update(deltaTime);
     }
+
+    this.renderer.render(this.scene.getScene, this.camera);
+  };
+
+  animationEnabled = false;
+
+  EnableAnimationLoop() {
+    console.log("Enable animation loop");
+    this.animationEnabled = true;
+    this.clock.start();
+    this.renderer.setAnimationLoop(() => {
+      requestAnimationFrame(this.RenderFrame);
+    });
+  }
+
+  DisableAnimationLoop() {
+    console.log("Disable animation loop");
+    //this.animationEnabled = false;
+    this.clock.stop();
+    this.renderer.setAnimationLoop(null);
+  }
+
+  PlayAnimation(e) {
+    // var index = Array.prototype.indexOf.call(
+    //   this.animationTimeline.childNodes,
+    //   e.target
+    // );
+
+    let index = e.target.getAttribute("animationIndex");
+    console.log("Index: " + index);
+
+    if (index < 0) {
+      return;
+    }
+
+    for (var i = 0; i <= index; i++) this.scene.PlayAnimation(i);
+  }
 }
 
-var insetWidth = 150;
-var insetHeight = 150;
-
-function render() {
-    renderRequested = undefined;
-
-    //controls.update();
-
-    renderer.autoClear = true;
-    renderer.setViewport(0, 0, container.clientWidth, container.clientHeight);
-    renderer.setClearColor(0x111522);
-    renderer.render(mainScene, camera);
-
-    renderer.autoClear = false;
-    renderer.setClearColor(0x330000);
-    //renderer.clearDepth(); // important!
-    renderer.setViewport(navigationOffset, navigationOffset, navigationWidth, navigationHeight);
-
-
-    raycaster.setFromCamera(mouse, navigationCamera);
-    const intersects = raycaster.intersectObjects([navigationCube], true);
-    if (intersects.length != 0) {
-        for (let i = 0; i < intersects.length; i++) {
-            if (selectedFace != undefined && intersects[i] != selectedFace) {
-                selectedFace.material.color.setHex(0xFFFFFF);
-                selectedFace = intersects[i].object;
-                console.log(selectedFace.name)
-            }
-
-            selectedFace = intersects[i].object;
-            selectedFace.material.color.setHex(0xFF0000);
-        }
-    }
-    else {
-        if (selectedFace)
-            selectedFace.material.color.setHex(0xFFFFFF);
-    }
-    navigationCube.rotation.setFromRotationMatrix(camera.matrix.invert())
-
-    renderer.render(navigationScene, navigationCamera);
-}
-
-init();
+var app = new App();
+app.Init();
+//app.Start();
