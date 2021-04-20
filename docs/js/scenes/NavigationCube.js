@@ -1,13 +1,21 @@
 "use strict";
 
-var navigationScene = null;
-var navigationCamera = null;
-var navigationCube = null;
+import * as THREE from "../three.js/three.module.js";
+import { GLTFLoader } from "../three.js/loaders/GLTFLoader.js";
+
+//var navigationCamera = null;
+//var navigationCube = null;
 var navigationWidth = 150;
 var navigationHeight = 150;
 var navigationOffset = 10;
 
 export class NavigationCube {
+  renderTexture = undefined;
+  navigationScene = undefined;
+
+  gltfLoader = new GLTFLoader();
+  navigationCube = undefined;
+
   onMouseMove(event) {
     //   event.preventDefault();
 
@@ -33,19 +41,27 @@ export class NavigationCube {
     requestRenderIfNotRequested();
   }
 
-  init() {
-    this.setupCamera();
-    this.setupLight();
+  constructor() {
+    this.navigationScene = new THREE.Scene();
+    this.renderTexture = new THREE.WebGLRenderTarget(
+      navigationWidth,
+      navigationHeight,
+      { format: THREE.RGBAFormat }
+      //{ minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter }
+    );
 
-    navigationScene = new THREE.Scene();
+    this.SetupCamera();
+    this.SetupLight();
+
+    this.LoadModel("orientation_cube_v01.gltf");
   }
 
-  setupCamera() {
+  SetupCamera() {
     const size = 0.2;
     const near = 0;
     const far = 2;
-    aspectRatio = navigationWidth / navigationHeight;
-    navigationCamera = new THREE.OrthographicCamera(
+    let aspectRatio = navigationWidth / navigationHeight;
+    this.navigationCamera = new THREE.OrthographicCamera(
       (-aspectRatio * size) / 2,
       (aspectRatio * size) / 2,
       size / 2,
@@ -54,21 +70,58 @@ export class NavigationCube {
       far
     );
     // navigationCamera.zoom = 0.2;
-    navigationCamera.position.set(0, 0, 1);
-    navigationCamera.updateProjectionMatrix();
+    this.navigationCamera.position.set(0, 0, 1);
+    this.navigationCamera.updateProjectionMatrix();
   }
 
-  setupLight() {
+  SetupLight() {
     var hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3);
     hemiLight.position.set(0, 300, 0);
-    navigationScene.add(hemiLight);
+    this.navigationScene.add(hemiLight);
   }
 
-  attachToContainer(container) {
+  AttachToContainer(container) {
     container.addEventListener("mousemove", onMouseMove, false);
+  }
+
+  LoadGLTF(filePath, callback) {
+    this.gltfLoader.load(
+      filePath,
+      callback,
+      function (xhr) {
+        console.log(
+          filePath + ": " + (xhr.loaded / xhr.total) * 100 + "% loaded"
+        );
+      },
+      function (error) {
+        console.error(error);
+      }
+    );
+  }
+
+  LoadModel(modelFilename) {
+    let filePath = "data/models/" + modelFilename;
+
+    this.LoadGLTF(filePath, (gltf) => {
+      this.navigationCube = gltf.scene;
+
+      this.navigationScene.add(this.navigationCube);
+    });
   }
 
   get scene() {
     return navigationScene;
+  }
+
+  SetRotationFromCamera(camera) {
+    this.navigationCube.rotation.setFromRotationMatrix(camera.matrix.invert());
+  }
+
+  Render(renderer) {
+    renderer.setRenderTarget(this.renderTexture);
+    renderer.setClearColor(0x000000, 0);
+    renderer.clear();
+    renderer.render(this.navigationScene, this.navigationCamera);
+    renderer.setRenderTarget(null);
   }
 }

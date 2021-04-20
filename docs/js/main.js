@@ -23,6 +23,12 @@ export class App {
 
   animationTimeline = undefined;
 
+  navigationCube = undefined;
+
+  // Overlay
+  overlayCamera = undefined;
+  overlayScene = undefined;
+
   Init() {
     this.renderContainer = document.getElementById("render_canvas");
     this.uiContainer = document.getElementById("ui");
@@ -34,6 +40,9 @@ export class App {
 
     this.SetupHDR();
     this.SetupGUI();
+
+    this.navigationCube = new NavigationCube();
+    this.SetupOverlay();
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.target.copy(this.cameraTargetPosition);
@@ -60,8 +69,6 @@ export class App {
     this.camera.updateProjectionMatrix();
 
     this.animationTimeline = document.getElementById("timeline");
-    console.log(this.animationTimeline);
-
     this.animationTimeline.addEventListener("click", (e) =>
       this.PlayAnimation(e)
     );
@@ -69,6 +76,7 @@ export class App {
 
   SetupRenderer() {
     this.renderer = new THREE.WebGLRenderer({
+      alpha: true,
       antialias: true,
       canvas: this.renderContainer,
     });
@@ -175,6 +183,37 @@ export class App {
     //this.RequestFrame();
   }
 
+  SetupOverlay() {
+    let aspectRatio = 150 / 150;
+    let size = 0.2;
+    let near = 0.01;
+    let far = 3;
+
+    this.overlayCamera = new THREE.OrthographicCamera(
+      (-aspectRatio * size) / 2,
+      (aspectRatio * size) / 2,
+      size / 2,
+      -size / 2,
+      near,
+      far
+    );
+    this.overlayCamera.position.set(0, 0, 1);
+
+    this.overlayScene = new THREE.Scene();
+    this.overlayScene.background = null;
+
+    const geometry = new THREE.PlaneGeometry(0.1, 0.1, 1);
+    const material = new THREE.MeshBasicMaterial({
+      // color: 0xffffff,
+      // side: THREE.DoubleSide,
+      transparent: true,
+      map: this.navigationCube.renderTexture.texture,
+    });
+    const plane = new THREE.Mesh(geometry, material);
+    plane.position.set(0, 0.05, 0);
+    this.overlayScene.add(plane);
+  }
+
   Start() {
     requestAnimationFrame(this.RenderFrame);
   }
@@ -199,7 +238,26 @@ export class App {
       this.scene.animationMixer.update(deltaTime);
     }
 
+    this.renderer.autoClear = false;
+    this.renderer.clear();
+    this.renderer.setViewport(
+      0,
+      0,
+      this.renderContainer.clientWidth,
+      this.renderContainer.clientHeight
+    );
     this.renderer.render(this.scene.getScene, this.camera);
+
+    this.navigationCube.SetRotationFromCamera(this.camera);
+    this.navigationCube.Render(this.renderer, this.camera);
+
+    this.renderer.setViewport(
+      this.uiContainer.clientWidth - 130,
+      this.uiContainer.clientHeight - 170,
+      160,
+      160
+    );
+    this.renderer.render(this.overlayScene, this.overlayCamera);
   };
 
   animationEnabled = false;

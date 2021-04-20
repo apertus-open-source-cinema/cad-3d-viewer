@@ -198,8 +198,9 @@ export class MainScene {
       this.currentAnimations = gltf.animations;
       this.animationMixer = new THREE.AnimationMixer(this.currentModel);
       this.animationMixer.addEventListener("finished", () => {
+        //console.log(this.currentAnimations);
         this.runningAnimations--;
-
+        console.log("runningAnimations: " + this.runningAnimations);
         if (this.runningAnimations === 0) {
           PubSub.publishSync("scene_animation_finished");
         }
@@ -292,9 +293,9 @@ export class MainScene {
     action.clampWhenFinished = true;
     action.stop();
     action.reset();
+    this.runningAnimations++;
 
     PubSub.publishSync("scene_animation_started");
     action.play();
-    this.runningAnimations++;
   }
 }
