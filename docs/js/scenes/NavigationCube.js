@@ -5,8 +5,8 @@ import { GLTFLoader } from "../three.js/loaders/GLTFLoader.js";
 
 //var navigationCamera = null;
 //var navigationCube = null;
-var navigationWidth = 150;
-var navigationHeight = 150;
+var navigationWidth = 200;
+var navigationHeight = 200;
 var navigationOffset = 10;
 
 export class NavigationCube {
@@ -46,14 +46,18 @@ export class NavigationCube {
     this.renderTexture = new THREE.WebGLRenderTarget(
       navigationWidth,
       navigationHeight,
-      { format: THREE.RGBAFormat }
+      {
+        format: THREE.RGBAFormat,
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearMipMapLinearFilter,
+      }
       //{ minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter }
     );
 
     this.SetupCamera();
     this.SetupLight();
 
-    this.LoadModel("orientation_cube_v01.gltf");
+    this.LoadModel("orientation_cube_v01.glb");
   }
 
   SetupCamera() {
