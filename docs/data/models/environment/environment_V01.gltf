@@ -12,7 +12,8 @@
                 1,
                 2,
                 3,
-                4
+                4,
+                5
             ]
         }
     ],
@@ -33,6 +34,26 @@
                 0.11479999870061874,
                 -0.011260000057518482,
                 -0.11479999870061874
+            ]
+        },
+        {
+            "mesh" : 2,
+            "name" : "pencil",
+            "rotation" : [
+                0.5577498078346252,
+                -0.6552873849868774,
+                0.4346436858177185,
+                0.2657037079334259
+            ],
+            "scale" : [
+                0.6000000238418579,
+                1,
+                0.6000000238418579
+            ],
+            "translation" : [
+                0.0889965370297432,
+                0.0022981958463788033,
+                0.04860331490635872
             ]
         },
         {
@@ -110,6 +131,17 @@
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.7272727489471436
             }
+        },
+        {
+            "doubleSided" : true,
+            "name" : "pencil",
+            "pbrMetallicRoughness" : {
+                "baseColorTexture" : {
+                    "index" : 5
+                },
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.37727272510528564
+            }
         }
     ],
     "meshes" : [
@@ -143,6 +175,20 @@
                     "material" : 1
                 }
             ]
+        },
+        {
+            "name" : "Cylinder",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 10,
+                        "NORMAL" : 11,
+                        "TEXCOORD_0" : 12
+                    },
+                    "indices" : 13,
+                    "material" : 2
+                }
+            ]
         }
     ],
     "textures" : [
@@ -165,6 +211,10 @@
         {
             "sampler" : 0,
             "source" : 4
+        },
+        {
+            "sampler" : 0,
+            "source" : 5
         }
     ],
     "images" : [
@@ -192,6 +242,11 @@
             "mimeType" : "image/png",
             "name" : "grid-pad V01",
             "uri" : "grid-pad%20V01.png"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "pencil-texture",
+            "uri" : "pencil-texture.png"
         }
     ],
     "accessors" : [
@@ -274,6 +329,40 @@
             "componentType" : 5126,
             "count" : 24,
             "type" : "VEC2"
+        },
+        {
+            "bufferView" : 10,
+            "componentType" : 5126,
+            "count" : 262,
+            "max" : [
+                0.006062178406864405,
+                0.07999999821186066,
+                0.007000000216066837
+            ],
+            "min" : [
+                -0.006062178406864405,
+                -0.06963244080543518,
+                -0.007000000216066837
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 11,
+            "componentType" : 5126,
+            "count" : 262,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 12,
+            "componentType" : 5126,
+            "count" : 262,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 13,
+            "componentType" : 5123,
+            "count" : 1020,
+            "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
@@ -326,6 +415,26 @@
             "buffer" : 0,
             "byteLength" : 192,
             "byteOffset" : 2376
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3144,
+            "byteOffset" : 2568
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 3144,
+            "byteOffset" : 5712
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 2096,
+            "byteOffset" : 8856
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 2040,
+            "byteOffset" : 10952
         }
     ],
     "samplers" : [
@@ -336,7 +445,7 @@
     ],
     "buffers" : [
         {
-            "byteLength" : 2568,
+            "byteLength" : 12992,
             "uri" : "environment_V01.bin"
         }
     ]
