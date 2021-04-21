@@ -252,10 +252,10 @@ export class App {
     this.navigationCube.Render(this.renderer, this.camera);
 
     this.renderer.setViewport(
-      this.uiContainer.clientWidth - 170,
-      this.uiContainer.clientHeight - 220,
-      200,
-      200
+      this.uiContainer.clientWidth - 230,
+      this.uiContainer.clientHeight - 310,
+      300,
+      300
     );
     this.renderer.render(this.overlayScene, this.overlayCamera);
   };

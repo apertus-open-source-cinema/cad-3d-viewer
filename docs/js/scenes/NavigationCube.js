@@ -5,8 +5,8 @@ import { GLTFLoader } from "../three.js/loaders/GLTFLoader.js";
 
 //var navigationCamera = null;
 //var navigationCube = null;
-var navigationWidth = 200;
-var navigationHeight = 200;
+var navigationWidth = 250;
+var navigationHeight = 250;
 var navigationOffset = 10;
 
 export class NavigationCube {
@@ -61,7 +61,7 @@ export class NavigationCube {
   }
 
   SetupCamera() {
-    const size = 0.2;
+    const size = 0.23;
     const near = 0;
     const far = 2;
     let aspectRatio = navigationWidth / navigationHeight;
