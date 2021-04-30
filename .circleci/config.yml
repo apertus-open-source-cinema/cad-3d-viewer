@@ -6,4 +6,4 @@ jobs:
       - image: cimg/node:16.0.0
     steps:
       - checkout
-      - run: cd viewer && npm run build
+      - run: cd viewer && npm install && npm run build
