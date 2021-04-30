@@ -4,7 +4,6 @@ jobs:
   build:
     docker:
       - image: cimg/node:16.0.0
-    working_directory: ./viewer/
     steps:
       - checkout
-      - run: npm run build
+      - run: cd viewer && npm run build
