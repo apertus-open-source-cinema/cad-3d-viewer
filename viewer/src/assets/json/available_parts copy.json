@@ -1,0 +1,40 @@
+{
+  "parts": [
+    {
+      "name": "Enclosure cap (bottom)",
+      "modelFile": "cap_bottom_v5.glb"
+    },
+    {
+      "name": "Lens cap",
+      "modelFile": "cap_bottom_v5.glb"
+    },
+    {
+      "name": "Lens cap",
+      "modelFile": "cap_bottom_v5.glb"
+    },
+    {
+      "name": "Lens cap",
+      "modelFile": "cap_bottom_v5.glb"
+    },
+    {
+      "name": "Lens cap",
+      "modelFile": "cap_bottom_v5.glb"
+    },
+    {
+      "name": "Lens cap",
+      "modelFile": "cap_bottom_v5.glb"
+    },
+    {
+      "name": "Enclosure cap (bottom)",
+      "modelFile": "cap_bottom_v5.glb"
+    },
+    {
+      "name": "Enclosure cap (bottom)",
+      "modelFile": "cap_bottom_v5.glb"
+    },
+    {
+      "name": "Enclosure cap (bottom)",
+      "modelFile": "cap_bottom_v5.glb"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+.part_list {
+  color: white;
+  pointer-events: auto;
+  background-color: #413f3d;
+  /* overflow-y: auto; */
+  height: 100%;
+  z-index: -10;
+}
+
+.part_entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  text-align: center;
+  transition: all 0.2s;
+  font-weight: bold;
+  font-size: 0.75rem;
+  color: #636363;
+  cursor: pointer;
+}
+
+.part_entry:hover {
+  transform: scale(1.1);
+  opacity: 1;
+  color: white;
+}
+
+.active {
+  transform: scale(1.1);
+  opacity: 1;
+  color: white;
+}
+
+.part_list div .part_thumbnail {
+  background-image: url("../../assets/images/dummy_part_icon.png");
+  background-position: center;
+  background-size: cover;
+  width: 3em;
+  height: 3em;
+  border-radius: 3em;
+  border: 5px solid #aaaaaa;
+  transition: all 0.2s;
+  margin: 0.5em;
+}
+
+.part_list .active .part_thumbnail {
+  border-color: white;
+}

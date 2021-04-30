@@ -1,0 +1,23 @@
+{
+  "parts": [
+    {
+      "name": "Enclosure cap (bottom)",
+      "modelFile": "cap_bottom_v5.glb",
+      "revision": "v1.2",
+      "unit": "cm",
+      "length": "12.3",
+      "width": "5.8",
+      "height": "2.4",
+      "material": "aluminium"
+    },
+    {
+      "name": "Lens cap",
+      "modelFile": "axiom_lens_cap_v01.gltf",
+      "revision": "v2.7",
+      "unit": "cm",
+      "length": "6.4",
+      "width": "",
+      "height": "1.1"
+    }
+  ]
+}
