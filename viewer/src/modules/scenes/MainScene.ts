@@ -25,14 +25,12 @@ export class MainScene extends Three.Scene {
 		this.currentModelCenter = new Three.Vector3(0,0,0);
 
 		Three.DefaultLoadingManager.onLoad = () => {
-			//const emitter = getCurrentInstance().appContext.config.globalProperties.emitter;
 			eventEmitter.emit("scene_loaded");
 		};
 
 		this.SetupLight();
 
 		this.LoadEnvironment();
-		// this.LoadModel("axiom_lens_cap_v01.gltf");
 	}
 
 	SetupLight(): void {
@@ -154,10 +152,6 @@ export class MainScene extends Three.Scene {
 	LoadModel(fileName: string): void {
 
 		this.remove(this.currentModel);
-		// const geometry = new Three.BoxGeometry(0.2, 0.2, 0.2);
-		// const material = new Three.MeshNormalMaterial();
-		// const mesh = new Three.Mesh(geometry, material);
-		// this.add(mesh);
 
 		const filePath = "assets/models/" + fileName;
 
@@ -165,20 +159,8 @@ export class MainScene extends Three.Scene {
 			const gltfScene = gltf.scene;
 
 			this.currentModel = gltfScene;
-			/*this.currentModel = gltf.scene;
-			this.currentAnimations = gltf.animations;
-			this.animationMixer = new THREE.AnimationMixer(this.currentModel);
-			this.animationMixer.addEventListener("finished", () => {
-			  //console.log(this.currentAnimations);
-				  this.runningAnimations--;
-				  console.log("runningAnimations: " + this.runningAnimations);
-				  if (this.runningAnimations === 0) {
-				PubSub.publishSync("scene_animation_finished");
-				  }
-			});
-		*/
+		
 			const boundingBox = new Three.Box3().setFromObject(gltfScene);
-			//if (alignOrigin) {
 			const width = Math.abs(boundingBox.min.x);
 			const height = Math.abs(boundingBox.min.y);
 			const length = Math.abs(boundingBox.max.z);
@@ -204,9 +186,6 @@ export class MainScene extends Three.Scene {
 				if (child.isMesh) {
 					child.castShadow = true;
 					child.receiveShadow = true;
-					//     if (child.material.map) {
-					//       child.material.map.anisotropy = 16;
-					//     }
 
 					// assign metal material to object
 					const aluminummaterial = new Three.MeshPhysicalMaterial({

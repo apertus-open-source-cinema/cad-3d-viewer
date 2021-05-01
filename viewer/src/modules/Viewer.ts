@@ -14,6 +14,7 @@ export class Viewer {
 	clock = new Three.Clock();
 
 	cameraTargetPosition: Three.Vector3;
+	startPosition!: Three.Vector3;
 
 	isRenderingActive = false;
 	animationEnabled = false;
@@ -37,15 +38,11 @@ export class Viewer {
 		this.SetupHDR();
 	}
 
-	startPosition: Three.Vector3;
-
 	private SetupScene(eventEmitter: Emitter) {
 		this.scene = new MainScene(eventEmitter);
 		eventEmitter.on("scene_loaded", () => {
 			console.log("SCENE LOADED");
 			this.UpdateCameraTarget();
-
-			//			this.RequestFrame();
 		});
 
 		// eventEmitter.on("scene_animation_started", () => {
@@ -58,8 +55,7 @@ export class Viewer {
 
 		eventEmitter.on("scene_update_required", () => {
 			console.log("SCENE UPDATE");
-			this.updateProjectionMatrix();
-			// this.RequestFrame();
+			this.RequestFrame();
 		});
 	}
 
@@ -78,13 +74,8 @@ export class Viewer {
 			},
 			complete: () => { this.DisableAnimationLoop(); this.currentAnim = null; },
 			update: (anime: anime.AnimeParams) => {
-				//  console.log(anime.progress);
 				this.startPosition.lerp(this.scene.currentModelCenter, anime.progress / 100.0);
 				this.camera.lookAt(this.startPosition);
-				this.camera.updateMatrixWorld();
-				// this.controls.target.copy(positionVector);
-
-				// this.RequestFrame();
 			}
 		});
 	}
@@ -151,7 +142,6 @@ export class Viewer {
 
 	DisableAnimationLoop(): void {
 		console.log("DISABLE ANIM LOOP");
-		// console.log((new Error).stack);
 		// this.clock.stop();
 		this.renderer.setAnimationLoop(null);
 	}

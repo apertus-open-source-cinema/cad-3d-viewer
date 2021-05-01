@@ -52,6 +52,6 @@ export default defineComponent({
 });
 </script>
 
-<style scoped type="scss">
-@import "styles/PartList.scss";
+<style>
+@import "styles/PartList.css";
 </style>

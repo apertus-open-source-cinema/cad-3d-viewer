@@ -9,11 +9,10 @@ const emitter = mitt();
 
 declare module "@vue/runtime-core" {
     export interface ComponentCustomProperties {
-        emitter: Emitter //typeof emitter
+        emitter: Emitter
     }
 }
 
 const app = createApp(App);
-//app.provide("emitter", emitter);
 app.config.globalProperties.emitter = emitter;
 app.mount("#app");
