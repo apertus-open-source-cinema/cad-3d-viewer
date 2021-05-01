@@ -4,4 +4,15 @@
 
 - Extend README
 
-##Uasge
+## Usage
+
+- Prepare environment
+
+  `npm install`
+
+- Run for development
+
+  `npm run dev`
+
+- Build, _dist/_ folder will contain the result
+  `npm run build`
