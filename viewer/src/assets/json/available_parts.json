@@ -1,10 +1,10 @@
 {
   "parts": [
     {
-      "name": "Enclosure cap (bottom)",
+      "name": "Compact Enclosure Cap Bottom",
       "modelFile": "cap_bottom_v5.glb",
       "id": "cap_bottom_v5",
-      "revision": "v1.2",
+      "revision": " V5",
       "unit": "cm",
       "length": "12.3",
       "width": "5.8",
@@ -12,14 +12,15 @@
       "material": "aluminium"
     },
     {
-      "name": "Lens cap",
+      "name": "E-Mount Lenscap",
       "id": "axiom_lens_cap_v01",
       "modelFile": "axiom_lens_cap_v01.gltf",
-      "revision": "v2.7",
+      "revision": "V1",
       "unit": "cm",
       "length": "6.4",
       "width": "",
       "height": "1.1"
+	  "material": "PLA"
     }
   ]
 }
