@@ -18,22 +18,22 @@ import RenderPanel from "./components/RenderPanel.vue";
 import availableParts from "./assets/json/available_parts.json";
 
 export default {
-  name: "App",
-  components: {
-    PartInfoPanel,
-    PartList,
-    RenderPanel,
-  },
-  setup() {
-    const parts = ref(availableParts.parts);
-    const selectedIndex = ref(0); //PartList.selectedIndex;
+	name: "App",
+	components: {
+		PartInfoPanel,
+		PartList,
+		RenderPanel,
+	},
+	setup() {
+		const parts = ref(availableParts.parts);
+		const selectedIndex = ref(0); //PartList.selectedIndex;
 
-    return { parts, selectedIndex };
-  },
-  created() {
-    this.emitter.on("update_selected_model", (index) => {
-      this.selectedIndex = index;
-    });
-  },
+		return { parts, selectedIndex };
+	},
+	created() {
+		this.emitter.on("update_selected_model", (index) => {
+			this.selectedIndex = index;
+		});
+	},
 };
 </script>

@@ -1,9 +1,12 @@
+$apertus_orange: #fa8756;
+$link_active: $apertus_orange;
+
 #part_info_panel {
   background-color: #474747;
   /* height: 100%; */
   /* width: 100%; */
   overflow: hidden;
-  color: #ebebeb;
+  color: whitesmoke;
   position: relative;
 }
 
@@ -17,10 +20,8 @@
 
 #camera_name {
   position: relative;
-  background-color: #fa8756;
+  background-color: $apertus_orange;
   font-size: 1.2vw;
-  /* top: 50%; */
-  /* width: 35%; */
   text-align: right;
   padding-right: 0.5rem;
   height: 1.8vw;
@@ -28,12 +29,9 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  align-self: baseline;
 }
 
 #part_info {
-  /* top: 50%; */
-  /* left: 2%; */
   position: relative;
   font-size: 1.5vw;
 }
@@ -55,15 +53,15 @@
 
 #part_data {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-auto-flow: column;
   top: 60%;
   font-size: 1.2vw;
-  padding-left: 2em;
-  padding-right: 2em;
+  padding-left: 0em;
+  padding-right: 7.5em;
   text-align: right;
-  grid-column-gap: 1.5em;
+  /* grid-column-gap: 1.5em; */
 }
 
 .bold_text {
@@ -81,7 +79,7 @@
 }
 
 #apertus_link:hover {
-  color: #fa8756;
+  color: $link_active;
 }
 
 .empty_data_entry {

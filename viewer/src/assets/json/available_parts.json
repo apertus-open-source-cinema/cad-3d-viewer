@@ -3,6 +3,7 @@
     {
       "name": "Enclosure cap (bottom)",
       "modelFile": "cap_bottom_v5.glb",
+      "id": "cap_bottom_v5",
       "revision": "v1.2",
       "unit": "cm",
       "length": "12.3",
@@ -12,6 +13,7 @@
     },
     {
       "name": "Lens cap",
+      "id": "axiom_lens_cap_v01",
       "modelFile": "axiom_lens_cap_v01.gltf",
       "revision": "v2.7",
       "unit": "cm",

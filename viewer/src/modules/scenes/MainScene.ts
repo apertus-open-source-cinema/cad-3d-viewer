@@ -1,6 +1,8 @@
 import * as Three from "three";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Emitter } from "mitt";
+import "../materials/CustomAluiminium";
+import { CustomAluminium } from "../materials/CustomAluiminium";
 
 export class MainScene extends Three.Scene {
 	gltfLoader: GLTFLoader;
@@ -175,12 +177,12 @@ export class MainScene extends Three.Scene {
 			const origin = new Three.Vector3(centerX, centerY, centerZ);
 			const hex = 0xffff00;
 			const axes = new Three.ArrowHelper(new Three.Vector3(0,1,0), origin, 0.1, hex);
-			this.add(axes);
+			// this.add(axes);
 			//}
 
 			// Add bounding box visualisation
 			const box = new Three.BoxHelper(gltfScene, 0xffff00);
-			this.add(box);
+			// this.add(box);
 
 			gltfScene.traverse((child) => {
 				if (child.isMesh) {
@@ -198,6 +200,8 @@ export class MainScene extends Three.Scene {
 					aluminummaterial.clearcoatRoughness = this.material.clearcoatRoughness;
 	  	
 					child.material = aluminummaterial;
+					// child.material = CustomAluminium;
+					// child.material.uniforms.time.value = 0.3;
 				}
 			});
 

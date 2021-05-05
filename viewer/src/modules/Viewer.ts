@@ -1,5 +1,6 @@
 import * as Three from "three";
 import { MainScene } from "./scenes/MainScene";
+import { PostProcessingScene } from "./scenes/PostProcessingScene";
 import { Emitter } from "mitt";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import anime from "animejs";
@@ -8,6 +9,8 @@ export class Viewer {
 	container!: HTMLElement;
 	camera!: THREE.PerspectiveCamera;
 	scene!: MainScene;
+	postprocessingScene!: PostProcessingScene;
+
 	renderer!: Three.WebGLRenderer;
 	controls!: OrbitControls;
 
@@ -18,6 +21,8 @@ export class Viewer {
 
 	isRenderingActive = false;
 	animationEnabled = false;
+
+	currentAnim: any;
 
 	constructor(container: HTMLElement, eventEmitter: Emitter) {
 		this.container = container;
@@ -34,16 +39,17 @@ export class Viewer {
 		this.SetupCamera(aspectRatio);
 
 		this.SetupScene(eventEmitter);
-
+		this.SetupPostProcessingScene();
+		
 		this.SetupHDR();
 	}
 
 	private SetupScene(eventEmitter: Emitter) {
 		this.scene = new MainScene(eventEmitter);
-		eventEmitter.on("scene_loaded", () => {
+		/*eventEmitter.on("scene_loaded", () => {
 			console.log("SCENE LOADED");
-			this.UpdateCameraTarget();
-		});
+			// this.UpdateCameraTarget();
+		});*/
 
 		// eventEmitter.on("scene_animation_started", () => {
 		// 	this.EnableAnimationLoop();
@@ -59,7 +65,9 @@ export class Viewer {
 		});
 	}
 
-	currentAnim: any;
+	SetupPostProcessingScene(): void {
+		this.postprocessingScene = new PostProcessingScene(this.container.clientWidth, this.container.clientHeight);
+	}
 
 	UpdateCameraTarget(): void {
 		if(this.currentAnim) {
@@ -82,7 +90,7 @@ export class Viewer {
 
 	private SetupCamera(aspectRatio: number) {
 		this.camera = new Three.PerspectiveCamera(75, aspectRatio, 0.01, 1000);
-		this.camera.position.set(-0.3, 0.3, 0.5);
+		this.camera.position.set(-0.1, 0.2, 0.2);
 		this.camera.lookAt(this.cameraTargetPosition);
 		this.camera.setFocalLength(85);
 		this.camera.updateProjectionMatrix();
@@ -112,13 +120,14 @@ export class Viewer {
 		this.renderer.shadowMap.enabled = true;
 		this.renderer.shadowMap.type = Three.PCFSoftShadowMap;
 
+		console.log("WebGL2: " + this.renderer.capabilities.isWebGL2);
 		this.container.appendChild(this.renderer.domElement);
 	}
 
 	// TODO: replace with real HDR
 	private SetupHDR() {
 		const environmentTexture = new Three.TextureLoader().load(
-			"assets/textures/hdri/HDR_029_Sky_Cloudy_Ref.png"
+			"assets/textures/hdri/abstract_room.png"
 		);
 		environmentTexture.mapping = Three.EquirectangularReflectionMapping;
 		environmentTexture.encoding = Three.sRGBEncoding;
@@ -129,6 +138,15 @@ export class Viewer {
 	LoadModel(modelFile: string): void {
 		this.scene.LoadModel(modelFile);
 		this.UpdateCameraTarget();
+	}
+
+	Resize(width: number, height: number): void {
+		console.log("RENDERER RESIZE: " + width + " / " + height);
+		this.camera.aspect = width / height;
+		this.camera.updateProjectionMatrix();
+
+		this.renderer.setSize(width, height);
+		this.RequestFrame();
 	}
 
 	EnableAnimationLoop(): void {
@@ -160,6 +178,7 @@ export class Viewer {
 		// console.log("Render");
 		this.isRenderingActive = false;
 
+		
 		this.renderer.render(this.scene, this.camera);
 	};
 }

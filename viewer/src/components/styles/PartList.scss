@@ -1,49 +1,51 @@
+$text_color_inactive: #636363;
+$text_color_active: #ebebeb;
+$text_color_hover: $text_color_active;
+
 .part_list {
-  color: white;
+  color: $text_color_inactive;
   pointer-events: auto;
   background-color: #413f3d;
   /* overflow-y: auto; */
-  height: 100%;
+  height: 93%;
   z-index: -10;
+  padding-top: 1em;
 }
 
 .part_entry {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  padding: 0.5em;
   text-align: center;
   transition: all 0.2s;
   font-weight: bold;
   font-size: 0.75rem;
-  color: #636363;
+  color: $text_color_inactive;
   cursor: pointer;
 }
 
 .part_entry:hover {
   transform: scale(1.1);
   opacity: 1;
-  color: white;
+  color: $text_color_active;
 }
 
 .active {
   transform: scale(1.1);
   opacity: 1;
-  color: white;
+  color: $text_color_active;
 }
 
 .part_list div .part_thumbnail {
-  background-image: url("../../assets/images/dummy_part_icon.png");
-  background-position: center;
-  background-size: cover;
-  width: 3em;
-  height: 3em;
-  border-radius: 3em;
-  border: 5px solid #aaaaaa;
+  width: 4.5em;
+  height: 4.5em;
+  width: 100%;
   transition: all 0.2s;
-  margin: 0.5em;
+  opacity: 0.5;
 }
 
 .part_list .active .part_thumbnail {
-  border-color: white;
+  opacity: 1;
+  filter: contrast(200%);
 }

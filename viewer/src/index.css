@@ -1,25 +1,22 @@
 @font-face {
   font-family: "Titillium";
-  src: url("../fonts/titillium-web-v9-latin-regular.woff2") format("woff2"),
-    url("../fonts/titillium-web-v9-latin-regular.woff") format("woff");
+  src: url("assets/fonts/titillium-web-v9-latin-regular.woff2") format("woff2"),
+    url("assets/fonts/titillium-web-v9-latin-regular.woff") format("woff");
 }
 
 html,
 body {
   margin: 0;
   height: 100%;
-  font-family: "Titillium";
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Titillium";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
   color: #2c3e50;
   height: 100%;
-
-  /* margin-top: 60px; */
+  color: #ebebeb;
 }
 
 .no_text_selection {
