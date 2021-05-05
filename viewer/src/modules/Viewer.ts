@@ -46,10 +46,10 @@ export class Viewer {
 
 	private SetupScene(eventEmitter: Emitter) {
 		this.scene = new MainScene(eventEmitter);
-		/*eventEmitter.on("scene_loaded", () => {
+		eventEmitter.on("scene_loaded", () => {
 			console.log("SCENE LOADED");
-			// this.UpdateCameraTarget();
-		});*/
+			this.UpdateCameraTarget();
+		});
 
 		// eventEmitter.on("scene_animation_started", () => {
 		// 	this.EnableAnimationLoop();
@@ -137,7 +137,7 @@ export class Viewer {
 
 	LoadModel(modelFile: string): void {
 		this.scene.LoadModel(modelFile);
-		this.UpdateCameraTarget();
+		// this.UpdateCameraTarget();
 	}
 
 	Resize(width: number, height: number): void {
