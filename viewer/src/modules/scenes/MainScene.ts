@@ -44,9 +44,9 @@ export class MainScene extends Three.Scene {
 		// Spotlight 1
 		const light1 = new Three.SpotLight(
 			0xffffff,
-			5,
+			3,
 			2,
-			Three.MathUtils.degToRad(13),
+			Three.MathUtils.degToRad(20),
 			0.3
 		);
 		light1.position.set(0.4, 0.4, 0.7);
@@ -68,9 +68,9 @@ export class MainScene extends Three.Scene {
 		// Spotlight 2
 		const light2 = new Three.SpotLight(
 			0xffffff,
-			10,
+			7,
 			2,
-			Three.MathUtils.degToRad(15),
+			Three.MathUtils.degToRad(25),
 			0.3
 		);
 		light2.position.set(-0.4, 0.45, -0.2);
@@ -92,9 +92,9 @@ export class MainScene extends Three.Scene {
 		// Spotlight 3
 		const light3 = new Three.SpotLight(
 			0xffffff,
-			5,
 			3,
-			Three.MathUtils.degToRad(5),
+			3,
+			Three.MathUtils.degToRad(15),
 			0.5
 		);
 		light3.position.set(0.8, 0.4, -2);
