@@ -5,10 +5,10 @@
       "modelFile": "cap_bottom_v5.glb",
       "id": "cap_bottom_v5",
       "revision": " V5",
-      "unit": "cm",
-      "length": "12.3",
-      "width": "5.8",
-      "height": "2.4",
+      "unit": "mm",
+      "length": "123",
+      "width": "58",
+      "height": "24",
       "material": "aluminium"
     },
     {
@@ -16,11 +16,22 @@
       "id": "axiom_lens_cap_v01",
       "modelFile": "axiom_lens_cap_v01.gltf",
       "revision": "V1",
-      "unit": "cm",
-      "length": "6.4",
+      "unit": "mm",
+      "length": "64",
       "width": "",
-      "height": "1.1",
+      "height": "11",
       "material": "PLA"
+    }
+	{
+      "name": "E-Mount",
+      "id": "axiom_e_mount_v4",
+      "modelFile": "axiom_e_mount_v4.glb",
+      "revision": "V4",
+      "unit": "mm",
+      "length": "66",
+      "width": "66",
+      "height": "7.8",
+      "material": "aluminium"
     }
   ]
 }
