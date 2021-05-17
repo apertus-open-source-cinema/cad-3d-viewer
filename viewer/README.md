@@ -4,6 +4,10 @@
 
 - Extend README
 
+## Requirements
+
+- node (V12 or later)
+
 ## Usage
 
 - Prepare environment
