@@ -130,7 +130,7 @@ export class MainScene extends Three.Scene {
 
 
 	LoadEnvironment(): void {
-		const filePath = "./assets/models/environment/environment_V01.gltf";
+		const filePath = "./assets/models/environment/environment_V02.gltf";
 
 		this.LoadGLTF(filePath, (gltf): void => {
 			const gltfScene = gltf.scene;
