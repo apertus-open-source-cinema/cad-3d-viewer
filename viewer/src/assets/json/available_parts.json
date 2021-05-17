@@ -15,7 +15,7 @@
     {
       "name": "E-Mount Lenscap",
       "id": "axiom_lens_cap_v01",
-      "modelFile": "axiom_lens_cap_v01.gltf",
+      "modelFile": "axiom_lens_cap_v01.glb",
       "revision": "V1",
       "unit": "mm",
       "length": "64",
