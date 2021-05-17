@@ -9,7 +9,8 @@
       "length": "123",
       "width": "58",
       "height": "24",
-      "material": "aluminium"
+      "material": "aluminium",
+      "shader": "aluminum_anodized_natural"
     },
     {
       "name": "E-Mount Lenscap",
@@ -20,7 +21,8 @@
       "length": "64",
       "width": "",
       "height": "11",
-      "material": "PLA"
+      "material": "PLA",
+      "shader": "plastic_black"
     },
 	{
       "name": "E-Mount",
@@ -31,7 +33,8 @@
       "length": "66",
       "width": "66",
       "height": "7.8",
-      "material": "aluminium"
+      "material": "aluminium",
+      "shader": "aluminum_anodized_black"
     }
   ]
 }
