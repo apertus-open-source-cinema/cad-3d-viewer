@@ -190,16 +190,16 @@ export class MainScene extends Three.Scene {
 					child.receiveShadow = true;
 
 					// assign metal material to object
-					const aluminummaterial = new Three.MeshPhysicalMaterial({
-							  color: this.material.color,
-					});
-					aluminummaterial.roughness = this.material.roughness;
-					aluminummaterial.metalness = this.material.metalness;
-					aluminummaterial.reflectivity = this.material.reflectivity;
-					aluminummaterial.clearcoat = this.material.clearcoat;
-					aluminummaterial.clearcoatRoughness = this.material.clearcoatRoughness;
+					// const aluminummaterial = new Three.MeshPhysicalMaterial({
+					// 		  color: this.material.color,
+					// });
+					// aluminummaterial.roughness = this.material.roughness;
+					// aluminummaterial.metalness = this.material.metalness;
+					// aluminummaterial.reflectivity = this.material.reflectivity;
+					// aluminummaterial.clearcoat = this.material.clearcoat;
+					// aluminummaterial.clearcoatRoughness = this.material.clearcoatRoughness;
 	  	
-					child.material = aluminummaterial;
+					//child.material = aluminummaterial;
 					// child.material = CustomAluminium;
 					// child.material.uniforms.time.value = 0.3;
 				}
