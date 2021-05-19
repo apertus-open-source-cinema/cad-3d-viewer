@@ -18,10 +18,14 @@ export class MainScene extends Three.Scene {
 		clearcoat: 0.6,
 		clearcoatRoughness: 0.6,
 	  };
+
+	eventEmitter: Emitter;
 	  
 	constructor(eventEmitter: Emitter) {
 		super();
 
+		this.eventEmitter = eventEmitter;
+		
 		this.gltfLoader = new GLTFLoader();
 		this.lightTargetPosition = new Three.Vector3(0.1, 0, -0.1);
 		this.currentModelCenter = new Three.Vector3(0,0,0);
@@ -206,6 +210,7 @@ export class MainScene extends Three.Scene {
 			});
 
 			this.add(gltfScene);
+			this.eventEmitter.emit("scene_model_loaded");
 		});
 	}
 }

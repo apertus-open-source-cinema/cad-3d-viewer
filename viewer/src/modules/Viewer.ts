@@ -1,9 +1,16 @@
 import * as Three from "three";
 import { MainScene } from "./scenes/MainScene";
-import { PostProcessingScene } from "./scenes/PostProcessingScene";
+
 import { Emitter } from "mitt";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { SSRPass } from "three/examples/jsm/postprocessing/SSRPass.js";
+import { PostProcessingScene } from "./scenes/PostProcessingScene";
+
 import anime from "animejs";
+
+import Tweakpane from "tweakpane";
 
 export class Viewer {
 	container!: HTMLElement;
@@ -23,6 +30,9 @@ export class Viewer {
 	animationEnabled = false;
 
 	currentAnim: any;
+
+	composer!: EffectComposer;
+	ssrPass!: SSRPass;
 
 	constructor(container: HTMLElement, eventEmitter: Emitter) {
 		this.container = container;
@@ -46,10 +56,13 @@ export class Viewer {
 
 	private SetupScene(eventEmitter: Emitter) {
 		this.scene = new MainScene(eventEmitter);
-		// eventEmitter.on("scene_loaded", () => {
-		// 	console.log("SCENE LOADED");
-		// 	this.UpdateCameraTarget();
-		// });
+		eventEmitter.on("scene_model_loaded", () => {
+			console.log("SCENE MODEL LOADED");
+			this.ssrPass.selects = this.scene.currentModel.children;
+			this.ssrPass.selective = true;
+
+			//this.UpdateCameraTarget();
+		});
 
 		// eventEmitter.on("scene_animation_started", () => {
 		// 	this.EnableAnimationLoop();
@@ -61,12 +74,33 @@ export class Viewer {
 
 		eventEmitter.on("scene_update_required", () => {
 			console.log("SCENE UPDATE");
+
 			this.RequestFrame();
 		});
 	}
 
 	SetupPostProcessingScene(): void {
-		this.postprocessingScene = new PostProcessingScene(this.container.clientWidth, this.container.clientHeight);
+		// this.postprocessingScene = new PostProcessingScene(this.container.clientWidth, this.container.clientHeight);
+
+		this.composer = new EffectComposer(this.renderer);
+		this.composer.setSize(
+			this.container.clientWidth,
+			this.container.clientHeight
+		);
+
+		this.ssrPass = new SSRPass({
+			renderer: this.renderer,
+			scene: this.scene,
+			camera: this.camera,
+			width: innerWidth * 1.5,
+			height: innerHeight * 1.5,
+			encoding: Three.sRGBEncoding,
+			isPerspectiveCamera: true,
+			groundReflector: null, //params.isGroundReflector ? groundReflector : null,
+			isBouncing: true,
+			selects: null //[this.scene.currentModel.children]
+		});
+		this.composer.addPass(this.ssrPass);
 	}
 
 	UpdateCameraTarget(): void {
@@ -179,6 +213,7 @@ export class Viewer {
 		this.isRenderingActive = false;
 
 		
-		this.renderer.render(this.scene, this.camera);
+		this.composer.render();
+		//this.renderer.render(this.scene, this.camera);
 	};
 }
