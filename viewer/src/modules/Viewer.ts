@@ -9,8 +9,8 @@ import { SSRPass } from "three/examples/jsm/postprocessing/SSRPass.js";
 import { PostProcessingScene } from "./scenes/PostProcessingScene";
 
 import anime from "animejs";
-
-import Tweakpane from "tweakpane";
+import { Pane } from "tweakpane";
+import { TpChangeEvent } from "../../node_modules.old/tweakpane/dist/types/blade/common/api/tp-event";
 
 export class Viewer {
 	container!: HTMLElement;
@@ -33,6 +33,7 @@ export class Viewer {
 
 	composer!: EffectComposer;
 	ssrPass!: SSRPass;
+	gui: Pane;
 
 	constructor(container: HTMLElement, eventEmitter: Emitter) {
 		this.container = container;
@@ -50,8 +51,16 @@ export class Viewer {
 
 		this.SetupScene(eventEmitter);
 		this.SetupPostProcessingScene();
-		
+
 		this.SetupHDR();
+
+		this.SetupGUI();
+	}
+
+	private SetupGUI() {
+		this.gui = new Pane();
+
+		// TODO: Add setup, as it is handled in scene_model_loaded handler
 	}
 
 	private SetupScene(eventEmitter: Emitter) {
@@ -61,7 +70,53 @@ export class Viewer {
 			this.ssrPass.selects = this.scene.currentModel.children;
 			this.ssrPass.selective = true;
 
-			//this.UpdateCameraTarget();
+			const materialFolder = this.gui.addFolder({ title: "Material", expanded: true });
+
+			materialFolder.addInput(this.scene.currentModel.children[0].material, "color", { input: "color" }).on("change", (ev: TpChangeEvent) => {
+				console.log(this.scene.currentModel.children[0].material);
+				const value = ev.value;
+				this.scene.currentModel.children[0].material.color.setRGB(value.r / 255.0, value.g / 255.0, value.b / 255.0);
+				this.UpdateMaterial();
+			});
+
+			materialFolder.addInput(this.scene.currentModel.children[0].material, "roughness", {min: 0.0, max: 1.0}).on("change", (ev: TpChangeEvent) => {
+				const value = ev.value;
+				this.scene.currentModel.children[0].material.roughness = value;
+				this.UpdateMaterial();
+			});
+
+			materialFolder.addInput(this.scene.currentModel.children[0].material, "metalness", {min: 0.0, max: 1.0}).on("change", (ev: TpChangeEvent) => {
+				const value = ev.value;
+				this.scene.currentModel.children[0].material.metalness = value;
+				this.UpdateMaterial();
+			});
+
+			materialFolder.addInput(this.scene.currentModel.children[0].material, "envMapIntensity", {min: 0.0, max: 3.0}).on("change", (ev: TpChangeEvent) => {
+				const value = ev.value;
+				this.scene.currentModel.children[0].material.envMapIntensity = value;
+				this.UpdateMaterial();
+			});
+
+			const postprocessingFolder = this.gui.addFolder({ title: "Post-processing", expanded: true });
+
+			postprocessingFolder.addInput(this.ssrPass, "opacity", {min: 0.0, max: 1.0}).on("change", (ev: TpChangeEvent) => {
+				const value = ev.value;
+				this.ssrPass.opacity = value;
+				this.RequestFrame();
+			});
+
+			postprocessingFolder.addInput(this.ssrPass, "maxDistance", {min: 0.0, max: 3.0}).on("change", (ev: TpChangeEvent) => {
+				const value = ev.value;
+				this.ssrPass.maxDistance = value;
+				this.RequestFrame();
+			});
+
+			console.log(this.ssrPass);
+			postprocessingFolder.addInput(this.ssrPass, "thickTolerance", {view: "number", min: 0.0, max: 3.0}).on("change", (ev: TpChangeEvent) => {
+				const value = ev.value;
+				this.ssrPass.thickTolerance = value;
+				this.RequestFrame();
+			});
 		});
 
 		// eventEmitter.on("scene_animation_started", () => {
@@ -79,12 +134,17 @@ export class Viewer {
 		});
 	}
 
+	private UpdateMaterial() {
+		this.scene.currentModel.children[0].material.needsUpdate = true;
+		this.RequestFrame();
+	}
+
 	SetupPostProcessingScene(): void {
 		// this.postprocessingScene = new PostProcessingScene(this.container.clientWidth, this.container.clientHeight);
 
 		this.composer = new EffectComposer(this.renderer);
 		this.composer.setSize(
-			this.container.clientWidth,
+			this.container.clientWidth * 2,
 			this.container.clientHeight
 		);
 
@@ -92,19 +152,19 @@ export class Viewer {
 			renderer: this.renderer,
 			scene: this.scene,
 			camera: this.camera,
-			width: innerWidth * 1.5,
-			height: innerHeight * 1.5,
+			width: innerWidth,
+			height: innerHeight,
 			encoding: Three.sRGBEncoding,
 			isPerspectiveCamera: true,
 			groundReflector: null, //params.isGroundReflector ? groundReflector : null,
-			isBouncing: true,
+			isBouncing: false,
 			selects: null //[this.scene.currentModel.children]
 		});
 		this.composer.addPass(this.ssrPass);
 	}
 
 	UpdateCameraTarget(): void {
-		if(this.currentAnim) {
+		if (this.currentAnim) {
 			this.currentAnim.reset();
 		}
 
@@ -212,7 +272,7 @@ export class Viewer {
 		// console.log("Render");
 		this.isRenderingActive = false;
 
-		
+
 		this.composer.render();
 		//this.renderer.render(this.scene, this.camera);
 	};
