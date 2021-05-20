@@ -35,6 +35,18 @@
       "height": "7.8",
       "material": "aluminium",
       "shader": "aluminum_anodized_black"
+    },
+	{
+      "name": "Assembly Test",
+      "id": "assembly_test",
+      "modelFile": "assembly_test_v1.glb",
+      "revision": "V1",
+      "unit": "",
+      "length": "",
+      "width": "",
+      "height": "",
+      "material": "",
+      "shader": ""
     }
   ]
 }
