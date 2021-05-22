@@ -110,13 +110,6 @@ export class Viewer {
 				this.ssrPass.maxDistance = value;
 				this.RequestFrame();
 			});
-
-			console.log(this.ssrPass);
-			postprocessingFolder.addInput(this.ssrPass, "thickTolerance", {view: "number", min: 0.0, max: 3.0}).on("change", (ev: TpChangeEvent) => {
-				const value = ev.value;
-				this.ssrPass.thickTolerance = value;
-				this.RequestFrame();
-			});
 		});
 
 		// eventEmitter.on("scene_animation_started", () => {

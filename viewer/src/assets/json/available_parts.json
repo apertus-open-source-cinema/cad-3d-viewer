@@ -24,7 +24,7 @@
       "material": "PLA",
       "shader": "plastic_black"
     },
-	{
+    {
       "name": "E-Mount",
       "id": "axiom_e_mount_v4",
       "modelFile": "axiom_e_mount_v4.glb",
@@ -36,9 +36,9 @@
       "material": "aluminium",
       "shader": "aluminum_anodized_black"
     },
-	{
+    {
       "name": "Assembly Test",
-      "id": "assembly_test",
+      "id": "assembly_test_v1",
       "modelFile": "assembly_test_v1.glb",
       "revision": "V1",
       "unit": "",
