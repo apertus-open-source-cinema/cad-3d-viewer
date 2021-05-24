@@ -16,7 +16,7 @@ jobs:
       - image: node:current-alpine
     steps:
       - attach_workspace:
-          at: docs
+          at: dist
       - add_ssh_keys:
           fingerprints:
             - "ef:d4:88:5b:db:73:3f:c9:cc:31:fb:53:57:f4:8a:83"
@@ -26,9 +26,10 @@ jobs:
             npm install -g gh-pages
             git config user.email "build@apertus.org"
             git config user.name "ci-build"
-      - run:
-          name: Deploy docs to gh-pages branch
-          command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/
+            git push origin `git subtree split --prefix dist master`:gh-pages --force
+      #- run:
+      #    name: Deploy docs to gh-pages branch
+      #    command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/ --dest docs/
 
 workflows:
   version: 2
