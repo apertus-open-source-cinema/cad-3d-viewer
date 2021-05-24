@@ -36,3 +36,8 @@ workflows:
     jobs:
       - build
       - deploy-html
+        requires:
+          - build
+        filters:
+          branches:
+            only: master
