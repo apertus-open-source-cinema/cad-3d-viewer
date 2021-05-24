@@ -1,13 +1,42 @@
 <template>
   <div id="part_info_panel">
-    <img id="axiom_logo" src="../assets/images/axiom_logo.png" />
+    <div
+      style="
+        position: absolute;
+        right: 1em;
+        display: flex;
+        align-items: center;
+        color: #777777;
+      "
+    >
+      Light<label class="switch">
+        <input
+          ref="theme_switch"
+          type="checkbox"
+          style="position: absolute; right: 2em"
+          checked
+          @change="switchTheme"
+        />
+        <div />
+      </label>
+      Dark
+    </div>
+    <img id="axiom_logo" src="../assets/images/axiom_logo_light.png" />
     <img
       id="part_location"
       :src="'assets/models/parts/' + partInfo.id + '/location.png'"
     />
-    <div id="part_name">
-      <div id="camera_name">AXIOM BETA</div>
-      <div id="part_info" style="grid-column: 2">
+    <div id="part_info">
+      <div style="font-size: 0.75em; font-weight: bold">
+        AXIOM Beta Compact Enclosure
+      </div>
+      <div id="part_name">
+        {{ partInfo.name }}
+      </div>
+      <div id="part_revision">
+        {{ partInfo.revision }}
+      </div>
+      <!-- <div id="part_info" style="grid-column: 2">
         <span id="part_header">PART</span><span>REVISION</span>
       </div>
       <div
@@ -23,28 +52,36 @@
           partInfo.name
         }}</span>
         <span>{{ partInfo.revision }}</span>
-      </div>
+      </div> -->
     </div>
-    <div id="part_data">
-      <div>length:</div>
-      <div>width:</div>
-      <div>height:</div>
-      <div>material:</div>
+    <div style="display: flex">
+      <div id="thick_line" />
+      <div id="part_data">
+        <div>length:</div>
+        <div>width:</div>
+        <div>height:</div>
+        <div>material:</div>
+        <div>surface:</div>
 
-      <div class="bold_text">
-        {{ createDataString(partInfo.length) }}
-      </div>
-      <div class="bold_text">
-        {{ createDataString(partInfo.width) }}
-      </div>
-      <div class="bold_text">
-        {{ createDataString(partInfo.height) }}
-      </div>
-      <!-- :class="{ empty_data_entry: !partInfo.material }" -->
-      <div class="bold_text">
-        {{ partInfo.material || "-" }}
+        <div class="bold_text">
+          {{ createDataString(partInfo.length) }}
+        </div>
+        <div class="bold_text">
+          {{ createDataString(partInfo.width) }}
+        </div>
+        <div class="bold_text">
+          {{ createDataString(partInfo.height) }}
+        </div>
+        <!-- :class="{ empty_data_entry: !partInfo.material }" -->
+        <div class="bold_text">
+          {{ partInfo.material || "-" }}
+        </div>
+        <div class="bold_text">
+          {{ createDataString(partInfo.surface) }}
+        </div>
       </div>
     </div>
+
     <a id="apertus_link" href="http://www.apertus.org" target="_blank"
       >www.apertus.org</a
     >
@@ -70,6 +107,9 @@ export default defineComponent({
     };
   },
   methods: {
+    switchTheme(event) {
+      this.emitter.emit("switch_theme", event.srcElement.checked);
+    },
     updateModel() {
       console.log("MODEL UPDATED");
     },
@@ -86,6 +126,6 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="sass">
+<style lang="sass">
 @import "styles/PartInfoPanel.scss"
 </style>

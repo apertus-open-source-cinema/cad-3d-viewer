@@ -1,15 +1,30 @@
-$text_color_inactive: #636363;
-$text_color_active: #ebebeb;
-$text_color_hover: $text_color_active;
+//$text_color_inactive: #636363;
+// $text_color_active: #ebebeb;
+// $text_color_hover: $text_color_active;
+
+:root {
+  --background_part_list: #413f3d;
+  --text_color: whitesmoke;
+  --text_color_inactive: #636363;
+}
+
+[data-theme="light"] {
+  --background_part_list: #bec0c2;
+  --light_grey: #727272;
+  --text_color: black;
+  --text_color_inactive: #727272;
+}
 
 .part_list {
-  color: $text_color_inactive;
+  color: var(--text_color); //$text_color_inactive;
   pointer-events: auto;
-  background-color: #413f3d;
+  background-color: var(--background_part_list);
   /* overflow-y: auto; */
-  height: 93%;
+  height: 95%;
   z-index: -10;
   padding: 0.5em;
+  display: flex;
+  flex-direction: column;
 }
 
 .part_entry {
@@ -21,27 +36,27 @@ $text_color_hover: $text_color_active;
   transition: all 0.2s;
   font-weight: bold;
   font-size: 0.75rem;
-  color: $text_color_inactive;
+  color: var(--text_color_inactive);
   cursor: pointer;
 }
 
 .part_entry:hover {
   transform: scale(1.1);
   opacity: 1;
-  color: $text_color_active;
+  color: var(--text_color);
 }
 
 .active {
   transform: scale(1.1);
   opacity: 1;
-  color: $text_color_active;
+  color: var(--text_color);
 }
 
 .part_list div .part_thumbnail {
   width: 100%;
   height: 100%;
   transition: all 0.2s;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
 .part_list .active .part_thumbnail {
