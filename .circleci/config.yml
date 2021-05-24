@@ -22,13 +22,10 @@ jobs:
             - "ef:d4:88:5b:db:73:3f:c9:cc:31:fb:53:57:f4:8a:83"
       - run:
           command: |
-<<<<<<< HEAD
             apk add --no-cache git
-=======
->>>>>>> main
             npm install -g --silent gh-pages
             git config user.email "build@apertus.org"
-            git config user.name "${CIRCLE_USERNAME}"
+            git config user.name "ci-build"
       - run:
           name: Deploy docs to gh-pages branch
           command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/
