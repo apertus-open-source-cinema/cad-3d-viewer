@@ -15,6 +15,7 @@ jobs:
     docker:
       - image: node:current-alpine
     steps:
+      - checkout
       - attach_workspace:
           at: dist
       - add_ssh_keys:
