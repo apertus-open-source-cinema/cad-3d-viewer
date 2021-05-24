@@ -23,7 +23,7 @@ jobs:
       - run:
           command: |
             apk add --no-cache git
-            npm install -g --silent gh-pages
+            npm install -g gh-pages
             git config user.email "build@apertus.org"
             git config user.name "ci-build"
       - run:
