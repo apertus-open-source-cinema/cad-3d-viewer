@@ -26,7 +26,7 @@ jobs:
             apk add --no-cache git git-subtree openssh
             git config user.email "build@apertus.org"
             git config user.name "ci-build"
-            git push origin `git subtree split --prefix dist master`:gh-pages --force -v
+            git push origin `git subtree split --prefix dist main`:gh-pages --force -v
 
 workflows:
   version: 2
