@@ -23,7 +23,7 @@ jobs:
             - "ef:d4:88:5b:db:73:3f:c9:cc:31:fb:53:57:f4:8a:83"
       - run:
           command: |
-            apk add --no-cache git
+            apk add --no-cache git git-subtree openssh
             git config user.email "build@apertus.org"
             git config user.name "ci-build"
             git push origin `git subtree split --prefix dist master`:gh-pages --force -v
