@@ -23,13 +23,9 @@ jobs:
       - run:
           command: |
             apk add --no-cache git
-            npm install -g gh-pages
             git config user.email "build@apertus.org"
             git config user.name "ci-build"
-            git push origin `git subtree split --prefix dist master`:gh-pages --force
-      #- run:
-      #    name: Deploy docs to gh-pages branch
-      #    command: gh-pages --dotfiles --message "[skip ci] Updates" --dist docs/ --dest docs/
+            git push origin `git subtree split --prefix dist master`:gh-pages --force -v
 
 workflows:
   version: 2
