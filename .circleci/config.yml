@@ -16,7 +16,7 @@ jobs:
       - image: node:current-alpine
     steps:
       - attach_workspace:
-          at: dist
+          at: docs
       - add_ssh_keys:
           fingerprints:
             - "ef:d4:88:5b:db:73:3f:c9:cc:31:fb:53:57:f4:8a:83"
