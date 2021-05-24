@@ -8,14 +8,22 @@ $link_active: $apertus_orange;
   overflow: hidden;
   color: whitesmoke;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 #axiom_logo {
   left: 4em;
   top: 3em;
   position: relative;
-  margin-bottom: 27vw;
+  margin-bottom: 3em;
   width: 12vw;
+}
+
+#part_location {
+  width: 100%;
+  align-self: center;
+  margin: 3em;
 }
 
 #camera_name {
