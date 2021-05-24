@@ -13,14 +13,14 @@ jobs:
 
   deploy-html:
     docker:
-      - image: node:current-alpine
+      - image: cimg/node:16.0.0
     steps:
       - checkout
       - attach_workspace:
           at: dist
       - add_ssh_keys:
           fingerprints:
-            - "ef:d4:88:5b:db:73:3f:c9:cc:31:fb:53:57:f4:8a:83"
+            - "09:d7:09:7e:47:5e:0d:2c:a1:4b:1a:3a:1c:c0:e9:b1"
       - run:
           command: |
             apk add --no-cache git git-subtree openssh
