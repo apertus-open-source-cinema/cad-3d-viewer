@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  gh-pages: sugarshin/gh-pages@0.0.6
+
 jobs:
   build:
     docker:
@@ -17,22 +20,22 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: dist
+          at: ./
       - gh-pages/deploy:
-          build-dir: docs
+          build-dir: dist/
           ssh-fingerprints: "09:d7:09:7e:47:5e:0d:2c:a1:4b:1a:3a:1c:c0:e9:b1"
-
-orbs:
-  gh-pages: sugarshin/gh-pages@0.0.6
 
 workflows:
   version: 2
   build:
     jobs:
       - build
+          filters:
+            ignore:
+              - gh-pages
       - deploy-html:
           requires:
             - build
           filters:
-            branches:
-              only: main
+            ignore:
+              - gh-pages
