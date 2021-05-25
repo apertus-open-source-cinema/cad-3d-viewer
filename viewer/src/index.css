@@ -1,7 +1,7 @@
 @font-face {
-  font-family: "Titillium";
-  src: url("assets/fonts/titillium-web-v9-latin-regular.woff2") format("woff2"),
-    url("assets/fonts/titillium-web-v9-latin-regular.woff") format("woff");
+  font-family: "Roboto";
+  src: url("assets/fonts/roboto-v27-latin-regular.woff2") format("woff2"),
+    url("assets/fonts/roboto-v27-latin-regular.woff") format("woff");
 }
 
 html,
@@ -11,7 +11,7 @@ body {
 }
 
 #app {
-  font-family: "Titillium";
+  font-family: "Roboto";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
