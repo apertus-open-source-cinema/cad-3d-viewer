@@ -105,12 +105,13 @@
 }
 
 #part_name {
-  font-size: 3em;
+  font-size: 2.5em;
   font-weight: bold;
 }
 
 #part_revision {
   color: var(--text_color_darken);
+  font-size:0.8em;
 }
 
 #part_header {
@@ -127,6 +128,7 @@
   grid-auto-flow: column;
   text-align: right;
   grid-column-gap: 1.5em;
+  grid-row-gap:0.3em;
   color: var(--text_color_darken);
 }
 
