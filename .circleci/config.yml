@@ -18,15 +18,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: dist
-      #- add_ssh_keys:
-      #    fingerprints:
-      #      - "09:d7:09:7e:47:5e:0d:2c:a1:4b:1a:3a:1c:c0:e9:b1"
-      #- run:
-      #    command: |
-      #      git config user.email "build@apertus.org"
-      #      git config user.name "ci-build"
-      #      git push origin `git subtree split --prefix dist main`:gh-pages --force -v
       - gh-pages/deploy:
+          build-dir: docs
           ssh-fingerprints: "09:d7:09:7e:47:5e:0d:2c:a1:4b:1a:3a:1c:c0:e9:b1"
 
 orbs:
