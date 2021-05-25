@@ -29,13 +29,15 @@ workflows:
   version: 2
   build:
     jobs:
-      - build
-          filters:
+      - build:
+        filters:
+          branches:
             ignore:
               - gh-pages
       - deploy-html:
           requires:
             - build
           filters:
-            ignore:
-              - gh-pages
+            branches:
+              ignore:
+                - gh-pages
