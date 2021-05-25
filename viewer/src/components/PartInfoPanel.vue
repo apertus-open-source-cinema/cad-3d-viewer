@@ -22,12 +22,12 @@
       Dark
     </div>
     <img id="axiom_logo" src="../assets/images/axiom_logo_light.png" />
-    <img
+    <div id="part_info">
+      <img
       id="part_location"
       :src="'assets/models/parts/' + partInfo.id + '/location.png'"
-    />
-    <div id="part_info">
-      <div style="font-size: 0.75em; font-weight: bold">
+      />
+      <div style="font-size: 0.8em;">
         AXIOM Beta Compact Enclosure
       </div>
       <div id="part_name">
