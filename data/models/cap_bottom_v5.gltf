@@ -1,0 +1,121 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.5.0",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Cap Bottom V5",
+            "rotation" : [
+                1,
+                0,
+                0,
+                -4.371138828673793e-08
+            ],
+            "translation" : [
+                0,
+                0.013344092294573784,
+                0
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "emissiveFactor" : [
+                0.6039220094680786,
+                0.6470590233802795,
+                0.6862750053405762
+            ],
+            "name" : "ID9",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.6039220094680786,
+                    0.6470590233802795,
+                    0.6862750053405762,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "ID3",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1
+                    },
+                    "indices" : 2,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 35201,
+            "max" : [
+                0.07100000232458115,
+                0.013000000268220901,
+                0.03800000250339508
+            ],
+            "min" : [
+                -0.05400000140070915,
+                -0.004414999857544899,
+                -0.03500000014901161
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 35201,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5123,
+            "count" : 71700,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 422412,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 422412,
+            "byteOffset" : 422412
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 143400,
+            "byteOffset" : 844824
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 988224,
+            "uri" : "cap_bottom_v5.bin"
+        }
+    ]
+}

@@ -1,0 +1,116 @@
+{
+    "asset" : {
+        "generator" : "Khronos glTF Blender I/O v1.6.8",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "AXIOM Lens Cap",
+            "rotation" : [
+                0.7071068286895752,
+                0,
+                0,
+                0.7071067094802856
+            ],
+            "scale" : [
+                0.0009505175403319299,
+                0.0009505175403319299,
+                0.0009505175403319299
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "ID9",
+            "pbrMetallicRoughness" : {
+                "baseColorFactor" : [
+                    0.010133172385394573,
+                    0.01062270998954773,
+                    0.011087691411376,
+                    1
+                ],
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.6000000238418579
+            }
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "ID2",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1
+                    },
+                    "indices" : 2,
+                    "material" : 0
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 23827,
+            "max" : [
+                30.34929847717285,
+                30.34929847717285,
+                12
+            ],
+            "min" : [
+                -30.34929847717285,
+                -30.34929847717285,
+                -7.047309885991043e-16
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 23827,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5123,
+            "count" : 54156,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 285924,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 285924,
+            "byteOffset" : 285924
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 108312,
+            "byteOffset" : 571848
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 680160,
+            "uri" : "axiom_lens_cap_v01.bin"
+        }
+    ]
+}
