@@ -26,7 +26,20 @@ export default {
 	},
 	setup() {
 		const parts = ref(availableParts.parts);
-		const selectedIndex = ref(0); //PartList.selectedIndex;
+
+		let partIndex = 0;
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const part = urlParams.get("part");
+		console.log("Part: " + part);
+
+		partIndex = availableParts.parts.findIndex((item, i) => {
+			console.log(item);
+			return item.id === part;
+		});
+		console.log("partIndex: " + partIndex);
+    
+		const selectedIndex = ref(partIndex); //PartList.selectedIndex;
 
 		if (localStorage.getItem("theme") == "light") {
 			document.documentElement.setAttribute("data-theme", "light");
@@ -36,7 +49,7 @@ export default {
 
 		return { parts, selectedIndex };
 	},
-	created() {
+	created(): void {
 		this.emitter.on("update_selected_model", (index) => {
 			this.selectedIndex = index;
 		});
@@ -54,6 +67,11 @@ export default {
 			}
 			//   this.selectedIndex = index;
 		});
+
+		// console.log(this.$route.query.part);
+
+	},
+	mounted(): void {
 	},
 	//   methods: {
 	//     // _addDarkTheme() {
