@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 import PartInfoPanel from "./components/PartInfoPanel.vue";
 import PartList from "./components/PartList.vue";
@@ -28,6 +28,12 @@ export default {
 		const parts = ref(availableParts.parts);
 		const selectedIndex = ref(0); //PartList.selectedIndex;
 
+		if (localStorage.getItem("theme") == "light") {
+			document.documentElement.setAttribute("data-theme", "light");
+		} else {
+			document.documentElement.setAttribute("data-theme", "dark");
+		}
+
 		return { parts, selectedIndex };
 	},
 	created() {
@@ -40,9 +46,11 @@ export default {
 			if (themeIndex) {
 				console.log("DARK THEME");
 				document.documentElement.setAttribute("data-theme", "dark");
+				localStorage.setItem("theme", "dark");
 			} else {
 				console.log("LIGHT THEME");
 				document.documentElement.setAttribute("data-theme", "light");
+				localStorage.setItem("theme", "light");
 			}
 			//   this.selectedIndex = index;
 		});

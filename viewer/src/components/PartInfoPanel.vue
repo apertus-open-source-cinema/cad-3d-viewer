@@ -14,7 +14,6 @@
           ref="theme_switch"
           type="checkbox"
           style="position: absolute; right: 2em"
-          checked
           @change="switchTheme"
         >
         <div />
@@ -30,7 +29,7 @@
         id="part_location"
         :src="'assets/models/parts/' + partInfo.id + '/location.png'"
       >
-      <div style="font-size: 0.8em;">
+      <div style="font-size: 0.8em">
         AXIOM Beta Compact Enclosure
       </div>
       <div id="part_name">
@@ -110,6 +109,13 @@ export default defineComponent({
 		return {
 			count: 0,
 		};
+	},
+	mounted() {
+		if (localStorage.getItem("theme") == "light") {
+			this.$refs.theme_switch.checked = false;
+		} else {
+			this.$refs.theme_switch.checked = true;
+		}
 	},
 	methods: {
 		switchTheme(event) {
