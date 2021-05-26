@@ -127,7 +127,7 @@
 #part_data {
   // width: 80%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  // grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(5, 1fr);
   grid-auto-flow: column;
   text-align: right;

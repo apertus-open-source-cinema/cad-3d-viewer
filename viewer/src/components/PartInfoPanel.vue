@@ -16,17 +16,20 @@
           style="position: absolute; right: 2em"
           checked
           @change="switchTheme"
-        />
+        >
         <div />
       </label>
       Dark
     </div>
-    <img id="axiom_logo" src="../assets/images/axiom_logo_light.png" />
+    <img
+      id="axiom_logo"
+      src="../assets/images/axiom_logo_light.png"
+    >
     <div id="part_info">
       <img
-      id="part_location"
-      :src="'assets/models/parts/' + partInfo.id + '/location.png'"
-      />
+        id="part_location"
+        :src="'assets/models/parts/' + partInfo.id + '/location.png'"
+      >
       <div style="font-size: 0.8em;">
         AXIOM Beta Compact Enclosure
       </div>
@@ -77,14 +80,16 @@
           {{ partInfo.material || "-" }}
         </div>
         <div class="bold_text">
-          {{ createDataString(partInfo.surface) }}
+          {{ partInfo.surface || "-" }}
         </div>
       </div>
     </div>
 
-    <a id="apertus_link" href="http://www.apertus.org" target="_blank"
-      >www.apertus.org</a
-    >
+    <a
+      id="apertus_link"
+      href="http://www.apertus.org"
+      target="_blank"
+    >www.apertus.org</a>
   </div>
 </template>
 
@@ -92,37 +97,37 @@
 import { toRefs, watch, defineComponent } from "vue";
 
 export default defineComponent({
-  name: "PartInfoPanel",
-  props: {
-    // default: "N/A",
-    partInfo: {
-      type: Object,
-      required: true,
-    },
-    material: { type: String, default: "-" },
-  },
-  setup(props, context) {
-    return {
-      count: 0,
-    };
-  },
-  methods: {
-    switchTheme(event) {
-      this.emitter.emit("switch_theme", event.srcElement.checked);
-    },
-    updateModel() {
-      console.log("MODEL UPDATED");
-    },
-    createDataString(data: string) {
-      let result = "N/A";
+	name: "PartInfoPanel",
+	props: {
+		// default: "N/A",
+		partInfo: {
+			type: Object,
+			required: true,
+		},
+		material: { type: String, default: "-" },
+	},
+	setup(props, context) {
+		return {
+			count: 0,
+		};
+	},
+	methods: {
+		switchTheme(event) {
+			this.emitter.emit("switch_theme", event.srcElement.checked);
+		},
+		updateModel() {
+			console.log("MODEL UPDATED");
+		},
+		createDataString(data: string) {
+			let result = "N/A";
 
-      if (data) {
-        result = data + this.partInfo.unit;
-      }
+			if (data) {
+				result = data + this.partInfo.unit;
+			}
 
-      return result;
-    },
-  },
+			return result;
+		},
+	},
 });
 </script>
 
