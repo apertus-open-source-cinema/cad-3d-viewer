@@ -6,6 +6,7 @@
   --light_grey: #727272;
   --text_color: whitesmoke;
   --text_color_darken: #bebebe;
+  --background_part_location: #505050;
 }
 // input[type="checkbox"] {
 //   -webkit-appearance: checkbox;
@@ -17,6 +18,7 @@
   --negative_image: invert(1);
   --text_color: black;
   --text_color_darken: #474747;
+  --background_part_location: #cacaca;
 }
 
 .switch input {
@@ -80,7 +82,7 @@
   align-self: center;
   margin-top: 2em;
   margin-bottom: 3em;
-  background-color: #505050;
+  background-color: var(--background_part_info);
 }
 
 #thick_line {
