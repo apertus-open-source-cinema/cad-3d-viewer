@@ -10,6 +10,7 @@
       "width": "58",
       "height": "24",
       "material": "aluminium",
+	  "surface": "sandblasted & anodized silver",
       "shader": "aluminum_anodized_natural"
     },
     {
@@ -22,6 +23,7 @@
       "width": "",
       "height": "11",
       "material": "PLA",
+	  "surface": "",
       "shader": "plastic_black"
     },
     {
@@ -34,6 +36,7 @@
       "width": "66",
       "height": "7.8",
       "material": "aluminium",
+	  "surface": "sandblasted & anodized black",
       "shader": "aluminum_anodized_black"
     },
     {
@@ -46,6 +49,7 @@
       "width": "",
       "height": "",
       "material": "",
+	  "surface": "",
       "shader": ""
     }
   ]
