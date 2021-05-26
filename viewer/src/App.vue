@@ -33,12 +33,14 @@ export default {
 		const part = urlParams.get("part");
 		console.log("Part: " + part);
 
-		partIndex = availableParts.parts.findIndex((item, i) => {
-			console.log(item);
-			return item.id === part;
-		});
-		console.log("partIndex: " + partIndex);
-    
+		if(part) {
+			partIndex = availableParts.parts.findIndex((item, i) => {
+				console.log(item);
+				return item.id === part;
+			});
+			console.log("partIndex: " + partIndex);
+		}
+  
 		const selectedIndex = ref(partIndex); //PartList.selectedIndex;
 
 		if (localStorage.getItem("theme") == "light") {
@@ -67,11 +69,6 @@ export default {
 			}
 			//   this.selectedIndex = index;
 		});
-
-		// console.log(this.$route.query.part);
-
-	},
-	mounted(): void {
 	},
 	//   methods: {
 	//     // _addDarkTheme() {
