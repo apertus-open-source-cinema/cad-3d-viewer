@@ -114,6 +114,8 @@ export class Viewer {
 				this.ssrPass.maxDistance = value;
 				this.RequestFrame();
 			});
+
+			this.RequestFrame();
 		});
 
 		// eventEmitter.on("scene_animation_started", () => {
