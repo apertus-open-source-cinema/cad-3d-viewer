@@ -2,7 +2,10 @@
   <div
     style="display: grid; grid-template-columns: 7em 25em auto; height: 100%"
   >
-    <PartList :parts="parts" />
+    <PartList
+      :parts="parts"
+      :selected-index="selectedIndex"
+    />
     <PartInfoPanel :part-info="parts[selectedIndex]" />
     <RenderPanel :part="parts[selectedIndex]" />
   </div>

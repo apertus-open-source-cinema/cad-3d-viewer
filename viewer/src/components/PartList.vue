@@ -12,7 +12,7 @@
           class="part_thumbnail"
           :src="'assets/models/parts/' + item.id + '/icon.png'"
           onerror="this.src='assets/icons/dummy_icon.png';"
-        />
+        >
         <div>{{ item.name }}</div>
       </div>
     </div>
@@ -36,39 +36,43 @@
 import { ref, defineComponent } from "vue";
 
 export default defineComponent({
-  name: "PartList",
-  props: {
-    parts: {
-      type: Array,
-      required: true,
-    },
-  },
-  setup() {
-    const selectedIndex = ref(0);
+	name: "PartList",
+	props: {
+		parts: {
+			type: Array,
+			required: true,
+		},
+		selectedIndex: {
+			type: Number,
+			default: 0
+		}
+	},
+	setup(props) {
+		const selectedIndex = ref(props.selectedIndex);
 
-    return { selectedIndex };
-  },
-  methods: {
-    nextModel() {
-      this.emitter.emit("nextModel");
-    },
-    updateSelected(item, index) {
-      this.selectedIndex = index;
-      this.emitter.emit("update_selected_model", index);
-    },
-    GetIcon(part_id: string): string {
-      console.log("GET ICON");
-      console.log(part_id);
+		return { selectedIndex };
+	},
+	methods: {
+		nextModel() {
+			this.emitter.emit("nextModel");
+		},
+		updateSelected(item, index) {
+			this.selectedIndex = index;
+			this.emitter.emit("update_selected_model", index);
+		},
+		GetIcon(part_id: string): string {
+			console.log("GET ICON");
+			console.log(part_id);
 
-      let result = "assets/models/" + part_id + "/icon.png";
-      if (part_id === undefined) {
-        console.log("ICON NOT FOUND");
-        result = "assets/icons/dummy_icon.png";
-      }
+			let result = "assets/models/" + part_id + "/icon.png";
+			if (part_id === undefined) {
+				console.log("ICON NOT FOUND");
+				result = "assets/icons/dummy_icon.png";
+			}
 
-      return result;
-    },
-  },
+			return result;
+		},
+	},
 });
 </script>
 
