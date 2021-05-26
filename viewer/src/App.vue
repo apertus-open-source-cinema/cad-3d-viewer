@@ -31,17 +31,13 @@ export default {
 
 		const urlParams = new URLSearchParams(window.location.search);
 		const part = urlParams.get("part");
-		console.log("Part: " + part);
-
-		if(part) {
+		if (part) {
 			partIndex = availableParts.parts.findIndex((item, i) => {
-				console.log(item);
 				return item.id === part;
 			});
-			console.log("partIndex: " + partIndex);
 		}
-  
-		const selectedIndex = ref(partIndex); //PartList.selectedIndex;
+
+		const selectedIndex = ref(partIndex);
 
 		if (localStorage.getItem("theme") == "light") {
 			document.documentElement.setAttribute("data-theme", "light");
@@ -57,40 +53,14 @@ export default {
 		});
 
 		this.emitter.on("switch_theme", (themeIndex) => {
-			// console.log("THEME SWITCH");
 			if (themeIndex) {
-				console.log("DARK THEME");
 				document.documentElement.setAttribute("data-theme", "dark");
 				localStorage.setItem("theme", "dark");
 			} else {
-				console.log("LIGHT THEME");
 				document.documentElement.setAttribute("data-theme", "light");
 				localStorage.setItem("theme", "light");
 			}
-			//   this.selectedIndex = index;
 		});
 	},
-	//   methods: {
-	//     // _addDarkTheme() {
-	//     //   let darkThemeLinkEl = document.createElement("link");
-	//     //   darkThemeLinkEl.setAttribute("rel", "stylesheet");
-	//     //   darkThemeLinkEl.setAttribute("href", "/css/darktheme.css");
-	//     //   darkThemeLinkEl.setAttribute("id", "dark-theme-style");
-	//     //   let docHead = document.querySelector("head");
-	//     //   docHead.append(darkThemeLinkEl);
-	//     // },
-	//     // _removeDarkTheme() {
-	//     //   let darkThemeLinkEl = document.querySelector("#dark-theme-style");
-	//     //   let parentNode = darkThemeLinkEl.parentNode;
-	//     //   parentNode.removeChild(darkThemeLinkEl);
-	//     // },
-	//     // darkThemeSwitch() {
-	//     //   let darkThemeLinkEl = document.querySelector("#dark-theme-style");
-	//     //   if (!darkThemeLinkEl) {
-	//     //     this._addDarkTheme()
-	//     //   } else {
-	//     //     this._removeDarkTheme()
-	//     //   }
-	//}
 };
 </script>
