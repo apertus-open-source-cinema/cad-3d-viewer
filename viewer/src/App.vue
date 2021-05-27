@@ -2,14 +2,17 @@
   <div
     style="display: grid; grid-template-columns: 7em 25em auto; height: 100%"
   >
-    <PartList :parts="parts" />
+    <PartList
+      :parts="parts"
+      :selected-index="selectedIndex"
+    />
     <PartInfoPanel :part-info="parts[selectedIndex]" />
     <RenderPanel :part="parts[selectedIndex]" />
   </div>
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 import PartInfoPanel from "./components/PartInfoPanel.vue";
 import PartList from "./components/PartList.vue";
@@ -26,48 +29,41 @@ export default {
 	},
 	setup() {
 		const parts = ref(availableParts.parts);
-		const selectedIndex = ref(0); //PartList.selectedIndex;
+
+		let partIndex = 0;
+
+		const urlParams = new URLSearchParams(window.location.search);
+		const part = urlParams.get("part");
+		if (part) {
+			partIndex = availableParts.parts.findIndex((item, i) => {
+				return item.id === part;
+			});
+		}
+
+		const selectedIndex = ref(partIndex);
+
+		if (localStorage.getItem("theme") == "light") {
+			document.documentElement.setAttribute("data-theme", "light");
+		} else {
+			document.documentElement.setAttribute("data-theme", "dark");
+		}
 
 		return { parts, selectedIndex };
 	},
-	created() {
+	created(): void {
 		this.emitter.on("update_selected_model", (index) => {
 			this.selectedIndex = index;
 		});
 
 		this.emitter.on("switch_theme", (themeIndex) => {
-			// console.log("THEME SWITCH");
 			if (themeIndex) {
-				console.log("DARK THEME");
 				document.documentElement.setAttribute("data-theme", "dark");
+				localStorage.setItem("theme", "dark");
 			} else {
-				console.log("LIGHT THEME");
 				document.documentElement.setAttribute("data-theme", "light");
+				localStorage.setItem("theme", "light");
 			}
-			//   this.selectedIndex = index;
 		});
 	},
-	//   methods: {
-	//     // _addDarkTheme() {
-	//     //   let darkThemeLinkEl = document.createElement("link");
-	//     //   darkThemeLinkEl.setAttribute("rel", "stylesheet");
-	//     //   darkThemeLinkEl.setAttribute("href", "/css/darktheme.css");
-	//     //   darkThemeLinkEl.setAttribute("id", "dark-theme-style");
-	//     //   let docHead = document.querySelector("head");
-	//     //   docHead.append(darkThemeLinkEl);
-	//     // },
-	//     // _removeDarkTheme() {
-	//     //   let darkThemeLinkEl = document.querySelector("#dark-theme-style");
-	//     //   let parentNode = darkThemeLinkEl.parentNode;
-	//     //   parentNode.removeChild(darkThemeLinkEl);
-	//     // },
-	//     // darkThemeSwitch() {
-	//     //   let darkThemeLinkEl = document.querySelector("#dark-theme-style");
-	//     //   if (!darkThemeLinkEl) {
-	//     //     this._addDarkTheme()
-	//     //   } else {
-	//     //     this._removeDarkTheme()
-	//     //   }
-	//}
 };
 </script>
