@@ -11,10 +11,11 @@
       "height": "24",
       "material": "aluminium",
 	  "surface": "sandblasted & anodized silver",
-      "shader": "aluminum_anodized_natural"
+      "shader": "aluminum_anodized_natural",
+	  "source": "https://cad.onshape.com/documents/9aa42c10d73de66c7f7ef0a4/w/d1382fd006d56e4c3066c63f/e/9774cccf40a0ea48cbc9e041"
     },
     {
-      "name": "E-Mount Lenscap",
+      "name": "E-Mount Lens Cap",
       "id": "axiom_lens_cap_v01",
       "modelFile": "axiom_lens_cap_v01.glb",
       "revision": "Version 1",
@@ -24,7 +25,8 @@
       "height": "11",
       "material": "PLA",
 	  "surface": "",
-      "shader": "plastic_black"
+      "shader": "plastic_black",
+	  "source": "https://github.com/apertus-open-source-cinema/beta-hardware/tree/master/E-Mount%20Cap"
     },
     {
       "name": "E-Mount",
@@ -37,7 +39,8 @@
       "height": "7.8",
       "material": "aluminium",
 	  "surface": "sandblasted & anodized black",
-      "shader": "aluminum_anodized_black"
+      "shader": "aluminum_anodized_black",
+	  "source": "https://cad.onshape.com/documents/9aa42c10d73de66c7f7ef0a4/w/d1382fd006d56e4c3066c63f/e/03e0f16fae083ab06071e1b4"
     },
     {
       "name": "Assembly Test",
