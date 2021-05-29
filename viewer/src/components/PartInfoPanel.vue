@@ -84,21 +84,20 @@
       </div>
     </div>
 	<div style="display: flex">
-	<h2>Links:</h2>
-	<a
-	    class="source_link"
-      href="{{ partInfo.source }}"
-      target="_blank" 
-	>{{ partInfo.sourceLabel }}</a>
-	<a
-      id="apertus_link"
-      href="http://www.apertus.org"
-      target="_blank"
-    >www.apertus.org</a>
-	
+	<div id="part_links">
+		<h3>Links:</h3>
+		<a
+			class="source_link"
+			href="{{ partInfo.source || '#' }}"
+			target="_blank" 
+		>{{ partInfo.sourceLabel }}</a>
+		<a
+			id="apertus_link"
+			href="http://www.apertus.org"
+			target="_blank"
+		>www.apertus.org</a>
+		</div>
 	</div>
-
-    
   </div>
 </template>
 
