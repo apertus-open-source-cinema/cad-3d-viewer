@@ -85,7 +85,7 @@
     </div>
 	<div style="display: flex">
 	<div id="part_links">
-		<h3>Links:</h3><br />
+		<h3>Links:</h3>
 			<a
 				class="source_link"
 				:href="partInfo.source || '#'"

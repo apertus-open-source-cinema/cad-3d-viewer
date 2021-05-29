@@ -137,6 +137,7 @@
 }
 #part_links {
 	margin: 1em;
+	width:100%;
 }
 
 .bold_text {
@@ -146,13 +147,12 @@
 
 #apertus_link {
   color: var(--text_color_darken);
-  position: absolute;
-  bottom: 1em;
   text-align:center;
   font-size: 1vw;
   text-decoration: none;
   display: inline-block;
   width:100%;
+  padding-top: 2em;
 }
 
 #apertus_link:hover {
@@ -169,12 +169,14 @@ a.source_link {
 	display: flex;
     justify-content: center;
     align-items: center;
-	color:black;
+	color: var(--text_color_darken);
 	text-decoration:none;
-	margin-top:1em;
+	padding-top:1em;
+	padding-bottom:1em;
 }
 
 a.source_link:hover {
-	background-color: var(--background_part_location);
+	background-color: var(--text_color_darken);
+	color: var(--text_color);
 }
 
