@@ -83,12 +83,22 @@
         </div>
       </div>
     </div>
-
-    <a
+	<div style="display: flex">
+	<h2>Links:</h2>
+	<a
+	  class="source_link"
+      href="{{ partInfo.source || "#" }}"
+      target="_blank" 
+	>partInfo.sourceLabel</a>
+	<a
       id="apertus_link"
       href="http://www.apertus.org"
       target="_blank"
     >www.apertus.org</a>
+	
+	</div>
+
+    
   </div>
 </template>
 
@@ -128,7 +138,7 @@ export default defineComponent({
 			let result = "N/A";
 
 			if (data) {
-				result = data + this.partInfo.unit;
+				result = data + " " + this.partInfo.unit;
 			}
 
 			return result;

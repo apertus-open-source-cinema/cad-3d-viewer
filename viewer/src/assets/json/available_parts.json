@@ -12,7 +12,8 @@
       "material": "aluminium",
 	  "surface": "sandblasted & anodized silver",
       "shader": "aluminum_anodized_natural",
-	  "source": "https://cad.onshape.com/documents/9aa42c10d73de66c7f7ef0a4/w/d1382fd006d56e4c3066c63f/e/9774cccf40a0ea48cbc9e041"
+	  "source": "https://cad.onshape.com/documents/9aa42c10d73de66c7f7ef0a4/w/d1382fd006d56e4c3066c63f/e/9774cccf40a0ea48cbc9e041",
+	  "sourceLabel": "Open in Onshape"
     },
     {
       "name": "E-Mount Lens Cap",
@@ -25,8 +26,9 @@
       "height": "11",
       "material": "PLA",
 	  "surface": "",
-      "shader": "plastic_black",
-	  "source": "https://github.com/apertus-open-source-cinema/beta-hardware/tree/master/E-Mount%20Cap"
+	  "shader": "plastic_black",
+	  "source": "https://github.com/apertus-open-source-cinema/beta-hardware/tree/master/E-Mount%20Cap",
+	  "sourceLabel": "Source on Github"
     },
     {
       "name": "E-Mount",
@@ -40,7 +42,8 @@
       "material": "aluminium",
 	  "surface": "sandblasted & anodized black",
       "shader": "aluminum_anodized_black",
-	  "source": "https://cad.onshape.com/documents/9aa42c10d73de66c7f7ef0a4/w/d1382fd006d56e4c3066c63f/e/03e0f16fae083ab06071e1b4"
+	  "source": "https://cad.onshape.com/documents/9aa42c10d73de66c7f7ef0a4/w/d1382fd006d56e4c3066c63f/e/03e0f16fae083ab06071e1b4",
+	  "sourceLabel": "Open in Onshape"
     },
     {
       "name": "Assembly Test",
