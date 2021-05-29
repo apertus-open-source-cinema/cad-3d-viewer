@@ -86,12 +86,12 @@
 	<div style="display: flex">
 	<div id="part_links">
 		<h3>Links:</h3><br />
-		<a
-			class="source_link"
-			href="{{ partInfo.source || '#' }}"
-			target="_blank" 
-		>{{ partInfo.sourceLabel }}</a>
-		<a
+			<a
+				class="source_link"
+				:href="partInfo.source || '#'"
+				target="_blank" 
+			>{{ partInfo.sourceLabel }}</a>
+			<a
 			id="apertus_link"
 			href="http://www.apertus.org"
 			target="_blank"
