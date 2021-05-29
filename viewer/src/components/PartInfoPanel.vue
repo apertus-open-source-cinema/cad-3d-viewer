@@ -85,7 +85,7 @@
     </div>
 	<div style="display: flex">
 	<div id="part_links">
-		<h3>Links:</h3>
+		<h3>Links:</h3><br />
 		<a
 			class="source_link"
 			href="{{ partInfo.source || '#' }}"
